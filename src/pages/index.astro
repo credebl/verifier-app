@@ -1,0 +1,34 @@
+---
+import VerifyCredentials from "../components/verification/VerifyCrdentials";
+import Layout from "../layouts/Layout.astro";
+import { getSupabaseClient, loginUser } from "../api/auth";
+
+let token = Astro.cookies.get("session")?.value;
+
+const login = async () => {
+  const res = await loginUser();
+  await Astro.cookies.set("session", res);
+};
+
+if (token) {
+  const {
+    data: { user },
+    error,
+  } = await getSupabaseClient().auth.getUser(token);
+  if (!user) {
+    await login();
+  }
+} else {
+  await login();
+}
+
+token = Astro.cookies.get("session")?.value;
+---
+
+<Layout title="Welcome to Astro.">
+  <main>
+    <VerifyCredentials token={token || ""} client:load />
+  </main>
+</Layout>
+
+<style></style>
