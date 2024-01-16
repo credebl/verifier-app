@@ -158,19 +158,6 @@ console.log("loading-----",loading);
 		const selectedUsers = await getFromLocalStorage('selected_user')
 		return JSON.parse(selectedUsers)
 	}
-
-  const selectConnection = (attributes: string, checked: boolean) => {
-		if (checked) {
-			setSelectedUsersData(prevSelectedUsersData => [
-				...prevSelectedUsersData,
-				{ name: attributes, selected: true }
-			]);
-		} else {
-			setSelectedUsersData(prevSelectedUsersData =>
-				prevSelectedUsersData.filter(item => item.name !== attributes)
-			);
-		}
-	}
  
 	const createProofRequest = async () => {
 		try {
