@@ -5,7 +5,6 @@ import { getConnection, receiveInvitationUrl } from "./Connection";
 import type { AxiosResponse } from "axios";
 import { apiStatusCodes } from "../../config/commonConstants";
 import { envConfig } from "../../config/envConfig";
-// import { setInterval } from "timers/promises";
 interface IOpenWebCamProps {
   onCloseWebCam: () => void;
   onScan: (result: any) => void;
@@ -58,7 +57,8 @@ console.log("loading-----",loading);
       if (data?.statusCode === apiStatusCodes?.API_STATUS_SUCCESS) {
         setUserData(data?.data);
         if (data?.data) {
-          // return data?.data;
+          await createProofRequest();
+          return data?.data;
         }
       } else {
         setErrMsg(response as string);
@@ -123,19 +123,28 @@ console.log("loading-----",loading);
   //   }, 1000)
   // }, [connectId])
 
+
   const acceptInvitation = async (invitationUrl: string) => {
     try {
       const orgId = envConfig.PUBLIC_ORGID;
       console.log("orgId", orgId);
 
-      // const invitationUrl = await getFromLocalStorage('orgId');
       console.log("invitationUrl::", invitationUrl);
+
       if (orgId) {
         const response = await receiveInvitationUrl(orgId, invitationUrl);
-
         const { data } = response as AxiosResponse;
+        
         if (data?.statusCode === apiStatusCodes?.API_STATUS_CREATED) {
           setUserData(data?.data);
+          
+          if (data?.data?.connectionId) {
+            await getConnectionDetails(data.data.connectionId);
+          }
+          
+          if (data?.data?.connectionId) {
+            await createProofRequest();
+          }
         } else {
           setErrMsg(response as string);
         }
@@ -186,25 +195,13 @@ console.log("loading-----",loading);
 				const response = await sendProofRequest(proofRequest);
 				const { data } = response as AxiosResponse;
 				if (data?.statusCode === apiStatusCodes.API_STATUS_CREATED) {
-					// setProofReqSuccess(data?.message);
-					// setRequestLoader(false);
-					// clearLocalStorage()
-					// setTimeout(()=>{
-					// 	window.location.href = '/organizations/verification'
-					// }, 2000)
 				} else {
 					setErrMsg(response as string);
 				}
 			}
-			setTimeout(()=>{
-				setErrMsg('');
-				// setProofReqSuccess('')
-
-			}, 4000)
 		} catch (error) {
 			console.error("Error:", error);
 			setErrMsg("An error occurred. Please try again.");
-			// setRequestLoader(false);
 		}
 	};
 
