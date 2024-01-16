@@ -12,7 +12,7 @@ const QrCode = () => {
   const [loading, setLoading] = useState(false);
   const [scannedData, setScannedData] = useState("");
 
-  const videoRef = useRef<HTMLVideoElement>(null);
+  // const videoRef = useRef<HTMLVideoElement>(null);
   const scannerRef = useRef<QrScanner | null>(null);
 
   const handleQrCodeScanned = (result: any) => {
@@ -22,26 +22,26 @@ const QrCode = () => {
     setLoading(false);
   };
 
-  const startScanning = () => {
+  // const startScanning = () => {
     // setLoading(true);
     // console.log("Starting QR scanner");
-    if (videoRef.current) {
-      try {
-        const scanner = new QrScanner(videoRef.current, (result) => {
-          console.log("Scanned Data:::", result);
-          handleQrCodeScanned(result);
-          setScannedData(result);
-        });
-        scanner.start();
-        scannerRef.current = scanner;
-        setLoading(true);
-        console.log("QR scanner started successfully.");
-      } catch (error) {
-        console.error("Error starting QR scanner:", error);
-        setLoading(false);
-      }
-    }
-  };
+  //   if (videoRef.current) {
+  //     try {
+  //       const scanner = new QrScanner(videoRef.current, (result) => {
+  //         console.log("Scanned Data:::", result);
+  //         handleQrCodeScanned(result);
+  //         setScannedData(result);
+  //       });
+  //       scanner.start();
+  //       scannerRef.current = scanner;
+  //       setLoading(true);
+  //       console.log("QR scanner started successfully. xyz-------");
+  //     } catch (error) {
+  //       console.error("Error starting QR scanner:", error);
+  //       setLoading(false);
+  //     }
+  //   }
+  // };
 
   const stopScanning = () => {
     if (scannerRef.current) {
@@ -55,7 +55,7 @@ const QrCode = () => {
   const handleOpenWebCam = () => {
     setLoading(true)
     setShowWebCam(true);
-    startScanning();
+    // startScanning();
   };
 
   const handleCloseWebCam = () => {
@@ -170,7 +170,7 @@ const QrCode = () => {
               </button>
               {/* )} */}
 
-              <video ref={videoRef} className="w-150 h-150"></video>
+              {/* <video ref={videoRef} className="w-150 h-150"></video> */}
             </div>
           </div>
         );

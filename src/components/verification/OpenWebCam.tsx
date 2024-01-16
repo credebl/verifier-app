@@ -1,18 +1,31 @@
 import React, { useRef, useEffect, useState } from "react";
 import QrScanner from "qr-scanner";
-import { getFromLocalStorage } from "./Verification";
+import { getFromLocalStorage, sendProofRequest } from "./Verification";
 import { getConnection, receiveInvitationUrl } from "./Connection";
 import type { AxiosResponse } from "axios";
 import { apiStatusCodes } from "../../config/commonConstants";
 import { envConfig } from "../../config/envConfig";
 // import { setInterval } from "timers/promises";
-interface OpenWebCamProps {
+interface IOpenWebCamProps {
   onCloseWebCam: () => void;
   onScan: (result: any) => void;
   scanData: any;
 }
+interface ISelectedUsers {
+	userName: string,
+	connectionId: string
+}
+interface IProofRequest {
+	connectionId: string;
+	attributes: Array<{
+		attributeName: string;
+		credDefId?: string  ;
+	}>;
+	comment: string;
+	orgId: string;
+}
 
-const OpenWebCam: React.FC<OpenWebCamProps> = ({
+const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   onCloseWebCam,
   onScan,
   scanData,
@@ -23,7 +36,7 @@ const OpenWebCam: React.FC<OpenWebCamProps> = ({
   const [errMsg, setErrMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [connectId, setConnectId] = useState("");
-  const [loop, setLoop] = useState();
+	const [selectedUsersData, setSelectedUsersData] = useState<Array<{ name: string, selected: boolean }>>([]);
 console.log("loading-----",loading);
 
   const handleQrCodeScanned = async (result: any) => {
@@ -132,6 +145,69 @@ console.log("loading-----",loading);
     }
   };
 
+	const getSelectedUsers = async (): Promise<ISelectedUsers[]> => {
+		const selectedUsers = await getFromLocalStorage('selected_user')
+		return JSON.parse(selectedUsers)
+	}
+
+  const selectConnection = (attributes: string, checked: boolean) => {
+		if (checked) {
+			setSelectedUsersData(prevSelectedUsersData => [
+				...prevSelectedUsersData,
+				{ name: attributes, selected: true }
+			]);
+		} else {
+			setSelectedUsersData(prevSelectedUsersData =>
+				prevSelectedUsersData.filter(item => item.name !== attributes)
+			);
+		}
+	}
+ 
+	const createProofRequest = async () => {
+		try {
+			// setRequestLoader(true);
+			const selectedUsers = await getSelectedUsers();
+			const credDefId = await getFromLocalStorage('cred_def_id');
+			const schemaId = await getFromLocalStorage('schema_id');
+			const orgId = await getFromLocalStorage('orgId');
+	
+			const attributes = selectedUsersData.map(user => ({
+        attributeName: user.name,
+        ...(credDefId ? { credDefId } : {}),
+        schemaId: schemaId
+      }));
+			const proofRequest: IProofRequest = {
+				connectionId: `${selectedUsers[0].connectionId}`,
+				attributes: attributes,
+				comment: "string",
+				orgId: orgId
+			};
+			if (attributes) {
+				const response = await sendProofRequest(proofRequest);
+				const { data } = response as AxiosResponse;
+				if (data?.statusCode === apiStatusCodes.API_STATUS_CREATED) {
+					// setProofReqSuccess(data?.message);
+					// setRequestLoader(false);
+					// clearLocalStorage()
+					// setTimeout(()=>{
+					// 	window.location.href = '/organizations/verification'
+					// }, 2000)
+				} else {
+					setErrMsg(response as string);
+				}
+			}
+			setTimeout(()=>{
+				setErrMsg('');
+				// setProofReqSuccess('')
+
+			}, 4000)
+		} catch (error) {
+			console.error("Error:", error);
+			setErrMsg("An error occurred. Please try again.");
+			// setRequestLoader(false);
+		}
+	};
+
   const startScanning = () => {
     // setLoading(true);
     // setLoading(false);
@@ -145,7 +221,7 @@ console.log("loading-----",loading);
         scanner.start();
         scannerRef.current = scanner;
         // setLoading(true);
-        console.log("QR scanner started successfully.");
+        console.log("QR scanner started successfully.  abc------");
       } catch (error) {
         console.error("Error starting QR scanner:", error);
         setLoading(false);
