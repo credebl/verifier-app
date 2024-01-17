@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 interface ScannedContentComponentProps {
   content: string;
@@ -7,6 +7,24 @@ interface ScannedContentComponentProps {
 const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
   content,
 }) => {
+  const [currentStep, setCurrentStep] = useState<number>(0);
+
+  const steps = [
+    "Connection Established between Organization and holder",
+    "Proof Request is sent",
+    "Holder shared proof presentation",
+    "Organization received proof presentation",
+    "Proof presentation verified",
+  ];
+
+  const nextStep = () => {
+    setCurrentStep((prevStep) => prevStep + 1);
+  };
+
+  const prevStep = () => {
+    setCurrentStep((prevStep) => prevStep - 1);
+  };
+
   return (
     <div className="px-12 py-4 md:px-24 lg:px-32 z-30 bg-white sticky top-[60px] border-b border-b-slate-50">
       <div className="flex items-center justify-center">
@@ -17,7 +35,7 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
           </div>
           <div className="flex items-center justify-center mt-20">
             <ol className="relative text-gray-500 border-s border-gray-200 dark:border-gray-700 dark:text-gray-400">
-              <li className="mb-20 ms-6">
+              <li className="mb-20 ml-6">
                 <span className="absolute flex items-center justify-center w-8 h-8 bg-green-200 rounded-full -start-4 ring-4 ring-white dark:ring-gray-900 dark:bg-green-900">
                   <svg
                     className="w-3.5 h-3.5 text-green-500 dark:text-green-400"
@@ -39,7 +57,7 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
                   Connection Established between Organization and holder
                 </h3>
               </li>
-              <li className="mb-20 ms-6">
+              <li className="mb-20 ml-6">
                 <span className="absolute flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full -start-4 ring-4 ring-white dark:ring-gray-900 dark:bg-gray-700">
                   <svg
                     className="w-3.5 h-3.5 text-gray-500 dark:text-gray-400"
@@ -55,7 +73,7 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
                   Proof Request is sent
                 </h3>
               </li>
-              <li className="mb-20 ms-6">
+              <li className="mb-20 ml-6">
                 <span className="absolute flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full -start-4 ring-4 ring-white dark:ring-gray-900 dark:bg-gray-700">
                   <svg
                     className="w-3.5 h-3.5 text-gray-500 dark:text-gray-400"
@@ -71,7 +89,28 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
                   Holder shared proof presentation
                 </h3>
               </li>
-              <li className="ms-6">
+              <li className="mb-20 ml-6">
+                <span className="absolute flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full -start-4 ring-4 ring-white dark:ring-gray-900 dark:bg-gray-700">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    className="w-4 h-4"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m19.5 19.5-15-15m0 0v11.25m0-11.25h11.25"
+                    />
+                  </svg>
+                </span>
+                <h3 className="text-xl font-medium leading-tight">
+                  Organization received proof presentation
+                </h3>
+              </li>
+              <li className="ml-6">
                 <span className="absolute flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full -start-4 ring-4 ring-white dark:ring-gray-900 dark:bg-gray-700">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -90,6 +129,7 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
                     width="32"
                     height="32"
                     fill="none"
+                    className="mr-2"
                     viewBox="0 0 24 24"
                   >
                     <path

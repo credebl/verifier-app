@@ -1,7 +1,7 @@
 import { apiRoutes } from "../../config/apiRoutes";
 import { envConfig } from "../../config/envConfig";
 import CryptoJS from "crypto-js"
-import { axiosPost } from "../../services/apiRequests";
+import { axiosGet, axiosPost } from "../../services/apiRequests";
 import { getHeaderConfigs } from "../../config/getHeaderConfig";
 
 export const decryptData = (value: any): string => {
@@ -18,13 +18,19 @@ export const getFromLocalStorage = async (key: string) =>{
 }
 
 export const sendProofRequest = async (payload: any) => {
+	const token = localStorage.getItem('session');
 	const orgId = await getFromLocalStorage('orgId');
 	const url = `${apiRoutes.org}/${orgId}${apiRoutes.verification.sendProofRequest}`;
 	const axiosPayload = {
 		url,
 		payload,
-		config: await getHeaderConfigs(),
-	};
+		config: {
+			headers: {
+			  "Content-Type": "application/json",
+			  Authorization: `Bearer ${token}`,
+			},
+		  },	
+		};
 
 	try {
 		return await axiosPost(axiosPayload);
@@ -33,3 +39,46 @@ export const sendProofRequest = async (payload: any) => {
 		return err?.message;
 	}
 };
+
+export const getProofData = async (proofId: string, orgId: string) => {
+	const token = localStorage.getItem('session');
+	const url = `${apiRoutes.org}/${orgId}${apiRoutes.verification.sendProofRequest}/${proofId}`;
+	const axiosPayload = {
+	  url,
+	  config: {
+		headers: {
+		  "Content-Type": "application/json",
+		  Authorization: `Bearer ${token}`,
+		},
+	  },	
+	};
+  
+	try {
+	  return await axiosGet(axiosPayload);
+	} catch (error) {
+	  const err = error as Error;
+	  return err?.message;
+	}
+  };
+
+  export const verifyPresentation = async (proofId: string, orgId: string) => {
+	const token = localStorage.getItem('session');
+	const url = `${apiRoutes.org}/${orgId}${apiRoutes.verification.sendProofRequest}/${proofId}/${apiRoutes.verification.verifyProof}`;
+	const axiosPayload = {
+	  url,
+	  config: {
+		headers: {
+		  "Content-Type": "application/json",
+		  Authorization: `Bearer ${token}`,
+		},
+	  },	
+	};
+  
+	try {
+	  return await axiosGet(axiosPayload);
+	} catch (error) {
+	  const err = error as Error;
+	  return err?.message;
+	}
+  };
+

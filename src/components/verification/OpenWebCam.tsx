@@ -1,6 +1,13 @@
+"use client";
+
 import React, { useRef, useEffect, useState } from "react";
 import QrScanner from "qr-scanner";
-import { getFromLocalStorage, sendProofRequest } from "./Verification";
+import {
+  getFromLocalStorage,
+  getProofData,
+  sendProofRequest,
+  verifyPresentation,
+} from "./Verification";
 import { getConnection, receiveInvitationUrl } from "./Connection";
 import type { AxiosResponse } from "axios";
 import { apiStatusCodes } from "../../config/commonConstants";
@@ -11,17 +18,17 @@ interface IOpenWebCamProps {
   scanData: any;
 }
 interface ISelectedUsers {
-	userName: string,
-	connectionId: string
+  userName: string;
+  connectionId: string;
 }
 interface IProofRequest {
-	connectionId: string;
-	attributes: Array<{
-		attributeName: string;
-		credDefId?: string  ;
-	}>;
-	comment: string;
-	orgId: string;
+  connectionId: string;
+  attributes: Array<{
+    attributeName: string;
+    credDefId?: string;
+  }>;
+  comment: string;
+  orgId: string;
 }
 
 const OpenWebCam: React.FC<IOpenWebCamProps> = ({
@@ -32,17 +39,31 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const scannerRef = useRef<QrScanner | null>(null);
   const [userData, setUserData] = useState();
+  const [QRData, setQRData] = useState({});
+  const [step, setStep] = useState(0);
   const [errMsg, setErrMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [connectId, setConnectId] = useState("");
-	const [selectedUsersData, setSelectedUsersData] = useState<Array<{ name: string, selected: boolean }>>([]);
-console.log("loading-----",loading);
+  const [connectId, setConnectId] = useState(
+    "9924aebe-d529-4b52-be9b-c2963fb44dbe"
+  );
+  const [connectionStatus, setConnectionStatus] = useState("");
+  const [proofId, setProofId] = useState("");
+  const [proofStatus, setProofStatus] = useState("");
+  const [selectedUsersData, setSelectedUsersData] = useState<
+    Array<{ name: string; selected: boolean }>
+  >([]);
+  console.log("loading-----", loading);
 
   const handleQrCodeScanned = async (result: any) => {
     console.log("result111", result);
     const data = await acceptInvitation(result);
     console.log(3534543, data);
-    setConnectId(data?.connectionId);
+    setStep(1)
+    // setTimeout(() => {
+    //   console.log(765765764, "set connectid");
+    //   setConnectId("9924aebe-d529-4b52-be9b-c2963fb44dbe");
+    // }, 2000);
+    // setConnectId(data?.connectionId);
     onScan(result);
     onCloseWebCam();
     // setLoading(false);
@@ -50,100 +71,17 @@ console.log("loading-----",loading);
 
   const getConnectionDetails = async (connectionId: string) => {
     try {
-      const orgId = await getFromLocalStorage("orgId");
-      const response = await getConnection(connectionId, orgId);
-
-      const { data } = response as AxiosResponse;
-      if (data?.statusCode === apiStatusCodes?.API_STATUS_SUCCESS) {
-        setUserData(data?.data);
-        if (data?.data) {
-          await createProofRequest();
-          return data?.data;
-        }
-      } else {
-        setErrMsg(response as string);
-      }
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  const fetchData = () => {
-    if (!userData) {
-      getConnectionDetails(connectId);
-    }
-  };
-
-  useEffect(() => {
-    console.log("interval useeffect", connectId, userData);
-    if (connectId) {
-      let count = 0;
-      const interval = setInterval(() => {
-        console.log(765765762, userData);
-        fetchData();
-        count++;
-      }, 3000);
-
-      console.log(765765761, interval, connectId);
-
-      if (count > 5) {
-        console.log(765765763, "clear");
-        clearInterval(interval);
-      }
-    }
-    // getConnectionDetails(connectId);
-  }, [connectId, userData]);
-
-  //   useEffect(() => {
-  //     setUserData(setInterval(() => {
-  //         console.log("loading")
-  //         // setLoadingStatus(loadingStatus + ".")
-  //     }, 1000))
-
-  //     return function cleanup() {
-  //         console.log('cleaning up')
-  //         clearInterval(userData)
-  //     }
-  // }, [])
-
-  // useEffect(() => {
-
-  // const intervalId = setInterval(() => {
-  //   console.log('4567');
-  // }, 1000);
-
-  // }, [connectId, userData]);
-
-  // useEffect(() => {
-  //   console.log("Use effect called>>>")
-  //   getConnectionDetails(connectId)
-  //   let count = 0
-  //   setInterval(() => {
-  //     console.log("Interval called::", count++)
-  //   }, 1000)
-  // }, [connectId])
-
-
-  const acceptInvitation = async (invitationUrl: string) => {
-    try {
-      const orgId = envConfig.PUBLIC_ORGID;
-      console.log("orgId", orgId);
-
-      console.log("invitationUrl::", invitationUrl);
-
-      if (orgId) {
-        const response = await receiveInvitationUrl(orgId, invitationUrl);
+      console.log(765765767, connectionId);
+      const orgId = await envConfig.PUBLIC_ORGID;
+      if (!connectionStatus) {
+        const response = await getConnection(connectionId, orgId);
+        console.log(765765765, response);
         const { data } = response as AxiosResponse;
-        
-        if (data?.statusCode === apiStatusCodes?.API_STATUS_CREATED) {
-          setUserData(data?.data);
-          
-          if (data?.data?.connectionId) {
-            await getConnectionDetails(data.data.connectionId);
-          }
-          
-          if (data?.data?.connectionId) {
-            await createProofRequest();
+        if (data?.statusCode === apiStatusCodes?.API_STATUS_SUCCESS) {
+          const status = data?.data?.state
+          setConnectionStatus(status);
+          if(status === 'completed'){
+            setStep(2)
           }
         } else {
           setErrMsg(response as string);
@@ -154,49 +92,265 @@ console.log("loading-----",loading);
     }
   };
 
-	const getSelectedUsers = async (): Promise<ISelectedUsers[]> => {
-		const selectedUsers = await getFromLocalStorage('selected_user')
-		return JSON.parse(selectedUsers)
-	}
- 
-	const createProofRequest = async () => {
-		try {
-			// setRequestLoader(true);
-			const selectedUsers = await getSelectedUsers();
-			const credDefId = await getFromLocalStorage('cred_def_id');
-			const schemaId = await getFromLocalStorage('schema_id');
-			const orgId = await getFromLocalStorage('orgId');
-	
-			const attributes = selectedUsersData.map(user => ({
-        attributeName: user.name,
-        ...(credDefId ? { credDefId } : {}),
-        schemaId: schemaId
-      }));
-			const proofRequest: IProofRequest = {
-				connectionId: `${selectedUsers[0].connectionId}`,
-				attributes: attributes,
-				comment: "string",
-				orgId: orgId
-			};
-			if (attributes) {
-				const response = await sendProofRequest(proofRequest);
-				const { data } = response as AxiosResponse;
-				if (data?.statusCode === apiStatusCodes.API_STATUS_CREATED) {
-				} else {
-					setErrMsg(response as string);
-				}
-			}
-		} catch (error) {
-			console.error("Error:", error);
-			setErrMsg("An error occurred. Please try again.");
-		}
-	};
+  const getProofDetails = async (proofId: string) => {
+    try {
+      console.log(865765767, proofId);
+      const orgId = await envConfig.PUBLIC_ORGID;
+      const response = await getProofData(proofId, orgId);
+      console.log(865765765, response);
+      const { data } = response as AxiosResponse;
+      if (data?.statusCode === apiStatusCodes?.API_STATUS_SUCCESS) {
+        setProofStatus(data?.data?.state);
+      } else {
+        setErrMsg(response as string);
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const AcceptinvitationStep = async () => {
+    try {
+      let intervalOne;
+      const status = await getConnectionDetails(connectId);
+      console.log(765765766, userData, connectId, status);
+
+      if (connectId && connectionStatus && connectionStatus !== "completed") {
+        intervalOne = setInterval(async () => {
+          console.log(765765762, connectionStatus);
+          await getConnectionDetails(connectId);
+        }, 3000);
+      } else if (connectionStatus === "completed") {
+        console.log(765765763, "clear");
+        setStep(2);
+        return clearInterval(intervalOne);
+      } else {
+        console.log(76576576, "else called!!");
+      }
+    } catch (err) {
+      console.log("Accept inviation Error:::", err);
+    }
+  };
+
+  const CreateProofRequestStep = async () => {
+    try {
+      if (connectionStatus === "completed") {
+        const credDefId =
+          "8SmUTa2PG5X9miX6LvoqU1:3:CL:265220:voter id Maharashtra";
+        const schemaId = "8SmUTa2PG5X9miX6LvoqU1:2:Voter Card:0.1.1";
+        const payload = {
+          connectionId: connectId,
+          attributes: [
+            {
+              attributeName: "name",
+              credDefId,
+              schemaId,
+            },
+            {
+              attributeName: "age",
+              credDefId,
+              schemaId,
+            },
+          ],
+          comment: "",
+        };
+        console.log(7657657612, payload)
+        const res = await createProofRequest(payload);
+        console.log(765765769, res);
+        setTimeout(() => {
+          setProofId("7c034605-e3d4-4990-ba81-8026bdc0d7c6");
+          setStep(3);
+        }, 3000);
+      }
+    } catch (err) {
+      console.log("Create Proof Request Error::::", err);
+    }
+  };
+
+  const fetchData = async (step: number) => {
+    switch (step) {
+      case 0:
+        console.log("STEP:::", 0)
+        startScanning();
+        break;
+      case 1:
+        console.log("STEP:::", 1)
+        AcceptinvitationStep();
+        break;
+      case 2:
+        console.log("STEP:::", 2)
+        CreateProofRequestStep();
+        break;
+      case 3:
+        console.log("STEP:::", 3)
+        console.log("ProofRequestStatusCheck");
+        if (!proofStatus && proofId) {
+          const status = await getProofDetails(proofId);
+          setStep(4);
+          console.log(7657657610, userData, proofId, status);
+        }
+        break;
+
+      case 4:
+        if (proofStatus === "presentation-received") {
+          const res = await verifyProofPresentation("");
+          setStep("ProofRequestStatusDone");
+          console.log("verifyStatusResponse::", res);
+        }
+        console.log("VerifyProofRequest");
+        break;
+
+      case 5:
+        if (proofStatus === "done") {
+          const status = await getProofDetails(proofId);
+          console.log("DoneVerificationstatus:::", status);
+        }
+        break;
+
+      default:
+        console.log("No any step");
+        break;
+    }
+  };
+
+  console.log(765765768, "connectionStatus", connectionStatus);
+
+  useEffect(() => {
+    console.log("interval useeffect", connectId, connectionStatus);
+    let intervalOne;
+    fetchData("ConnStatusCompleted");
+
+    if (connectId && connectionStatus && connectionStatus !== "completed") {
+      intervalOne = setInterval(() => {
+        console.log(765765762, connectionStatus);
+        fetchData("ConnStatusCompleted");
+      }, 3000);
+    } else if (connectionStatus === "completed") {
+      console.log(765765763, "clear");
+      setStep("CreateProofRequest");
+      return clearInterval(intervalOne);
+    } else {
+      console.log(76576576, "else called!!");
+    }
+
+    // Create proof request
+    if (connectionStatus === "completed") {
+      fetchData("CreateProofRequest");
+    }
+
+    // Pool to get proof request status
+    let intervalTwo;
+    fetchData("ProofRequestStatusDone");
+
+    if (proofId && proofStatus && proofStatus !== "presentation-received") {
+      intervalTwo = setInterval(() => {
+        console.log(765765760, proofStatus);
+        fetchData("ProofRequestStatusDone");
+      }, 3000);
+    } else if (proofStatus === "completed") {
+      console.log(765765763, "clear");
+      setStep("VerifyProofRequest");
+      return clearInterval(intervalTwo);
+    } else {
+      console.log(76576574, "else called!!");
+    }
+  }, [proofId, proofStatus, step]);
+
+  const acceptInvitation = async (qrData: string) => {
+    try {
+      const orgId = envConfig.PUBLIC_ORGID;
+      console.log("orgId", orgId);
+      const payloadData = qrData ? JSON.parse(qrData) : ''
+      setQRData(payloadData);
+
+      console.log("qrData::", payloadData);
+
+      if (orgId && payloadData) {
+        const response = await receiveInvitationUrl(orgId, payloadData);
+
+        console.log(7657657611, response)
+        const { data } = response as AxiosResponse;
+
+        if (data?.statusCode === apiStatusCodes?.API_STATUS_CREATED) {
+          // setUserData(data?.data);
+          // const connectionId = data?.data?.connectionRecord?.id
+          const connectionId = '9924aebe-d529-4b52-be9b-c2963fb44dbe'
+          if (connectionId) {
+            console.log(7657657612, "connectionId", connectionId)
+            setConnectId(connectionId)
+            await getConnectionDetails(connectionId);
+          }
+
+          if (data?.data?.connectionId) {
+            // await createProofRequest();
+          }
+        } else {
+          setErrMsg(response as string);
+        }
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const getSelectedUsers = async (): Promise<ISelectedUsers[]> => {
+    const selectedUsers = await getFromLocalStorage("selected_user");
+    return JSON.parse(selectedUsers);
+  };
+
+  const createProofRequest = async (payload: any) => {
+    try {
+      // setRequestLoader(true);
+      // const selectedUsers = await getSelectedUsers();
+      // const credDefId = await getFromLocalStorage("cred_def_id");
+      // const schemaId = await getFromLocalStorage("schema_id");
+      // const orgId = envConfig.PUBLIC_ORGID;
+
+      // const attributes = payload.attributes
+      // .map((item) => ({
+      //   attributeName: item.name,
+      //   ...(credDefId ? { credDefId } : {}),
+      //   schemaId: item.schemaId,
+      // }));
+      // const proofRequest: IProofRequest = {
+      //   connectionId: `${connectId}`,
+      //   attributes: attributes,
+      //   comment: "string",
+      //   orgId: orgId,
+      // };
+      if (payload?.attributes?.length > 0) {
+        const response = await sendProofRequest(payload);
+        const { data } = response as AxiosResponse;
+        if (data?.statusCode === apiStatusCodes.API_STATUS_CREATED) {
+          console.log(765765769, "RSPONSE:::", data);
+        } else {
+          setErrMsg(response as string);
+        }
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setErrMsg("An error occurred. Please try again.");
+    }
+  };
+
+  const verifyProofPresentation = async (proofId: string) => {
+    try {
+      const orgId = envConfig.PUBLIC_ORGID;
+      const response = await verifyPresentation(proofId, orgId);
+      const { data } = response as AxiosResponse;
+
+      if (data?.statusCode === apiStatusCodes.API_STATUS_CREATED) {
+        console.log(865765769, "RSPONSE:::", data);
+      } else {
+        setErrMsg(response as string);
+      }
+    } catch (error) {}
+  };
 
   const startScanning = () => {
     // setLoading(true);
     // setLoading(false);
     if (videoRef.current) {
-
       try {
         const scanner = new QrScanner(videoRef.current, (result) => {
           console.log(3443, result);
@@ -209,16 +363,15 @@ console.log("loading-----",loading);
       } catch (error) {
         console.error("Error starting QR scanner:", error);
         setLoading(false);
-      } finally{
-
-        setLoading(false)
+      } finally {
+        setLoading(false);
       }
     }
   };
 
   const stopScanning = () => {
     console.log("---------------");
-    
+
     if (scannerRef.current) {
       scannerRef.current.stop();
       console.log("QR scanner stopped.");
@@ -227,15 +380,12 @@ console.log("loading-----",loading);
   };
 
   useEffect(() => {
-    startScanning();
+    fetchData(step);
+
     return () => {
       stopScanning();
     };
-  }, []);
-
-  useEffect(() => {
-    console.log(434542, scanData);
-  }, [scanData]);
+  }, [step]);
 
   return (
     <div className="px-12 py-4 md:px-24 lg:px-32 z-30 bg-white sticky top-[60px] border-b border-b-slate-50">

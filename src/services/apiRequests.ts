@@ -1,5 +1,6 @@
 import type { AxiosError, AxiosResponse } from "axios";
 import axios from "axios";
+import { envConfig } from "../config/envConfig";
 
 export interface APIParameters {
     url: string,
@@ -9,7 +10,9 @@ export interface APIParameters {
 
 export const axiosGet = async ({ url, config }: APIParameters): Promise<AxiosResponse> => {
     try {
-        const response = await axios.get(url, config);
+        const baseURL = envConfig.PUBLIC_BASE_URL + url
+        console.log(657773, baseURL)
+        const response = await axios.get(baseURL, config);
 
         return response
     }
@@ -21,7 +24,9 @@ export const axiosGet = async ({ url, config }: APIParameters): Promise<AxiosRes
 
 export const axiosPost = async ({ url, payload, config }: APIParameters): Promise<AxiosResponse> => {
     try {		
-        const response = await axios.post(url, payload, config);
+        const baseURL = envConfig.PUBLIC_BASE_URL + url
+        console.log(6577731, baseURL)
+        const response = await axios.post(baseURL, payload, config);
 
         return response
     }

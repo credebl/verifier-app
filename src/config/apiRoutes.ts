@@ -15,6 +15,7 @@ export const apiRoutes = {
 
     verification: {
 		sendProofRequest: '/proofs',
+        verifyProof: '/verify'
 	},
 
     connection: {
