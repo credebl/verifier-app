@@ -7,7 +7,7 @@ interface ScannedContentComponentProps {
 
 const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
   content,
-  step
+  step,
 }) => {
   console.log("STEPS in Stepper:::", step);
   const [activeStep, setActiveStep] = useState(0);
@@ -16,7 +16,9 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
     const steps = 5;
 
     const interval = setInterval(() => {
-      setActiveStep((prevStep) => (prevStep < steps - 1 ? prevStep + 1 : prevStep));
+      setActiveStep((prevStep) =>
+        prevStep < steps - 1 ? prevStep + 1 : prevStep
+      );
     }, 3000);
 
     // Clear interval after 4 steps (4 * 5 seconds = 20 seconds)
@@ -34,9 +36,9 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
           </div>
           <div className="flex items-center justify-center mt-20">
             <ol className="relative text-gray-500 border-s border-gray-200 dark:border-gray-700 dark:text-gray-400">
-            {[0, 1, 2, 3, 4].map((index) => (
-<>
-              {/* <li className="mb-20 ml-6">
+              {[0, 1, 2, 3, 4].map((index) => (
+                <>
+                  {/* <li className="mb-20 ml-6">
                 <span className="absolute flex items-center justify-center w-8 h-8 bg-green-200 rounded-full -start-4 ring-4 ring-white dark:ring-gray-900 dark:bg-green-900">
                   <svg
                     className="w-3.5 h-3.5 text-green-500 dark:text-green-400"
@@ -155,46 +157,47 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
                 </h3>
               </li> */}
 
-          <li
-                  key={index}
-                  className={`mb-20 ml-6 ${
-                    index <= step ? "text-gray-700" : ""
-                  }`}
-                >
-                  <span className={`absolute flex items-center justify-center w-8 h-8 rounded-full -start-4 ring-4 ring-white dark:ring-gray-900 ${
-                    index <= step ? "bg-green-200" : "bg-gray-100"
-                  }`}>
-                    {index < step ? (
-                      <svg
-                        className="w-3.5 h-3.5 text-green-500 dark:text-green-400"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 16 12"
-                      >
-                        <path
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M1 5.917 5.724 10.5 15 1.5"
-                        />
-                      </svg>
-                    ) : null}
-                  </span>
-                  <h3 className="text-xl font-medium leading-tight">
-                    {index === 0 && "Connection Established between Organization and Holder"}
-                    {index === 1 && "Proof Request is sent to the holder"}
-                    {index === 2 && "Holder shared proof presentation"}
-                    {index === 3 && "Organization received proof presentation"}
-                    {index === 4 && "Verification process is complete"}
-
-                  </h3>
-                </li>
-
-              </>
-                            ))}
-
+                  <li
+                    key={index}
+                    className={`mb-20 ml-6 ${
+                      index <= step ? "text-gray-700" : ""
+                    }`}
+                  >
+                    <span
+                      className={`absolute flex items-center justify-center w-8 h-8 rounded-full -start-4 ring-4 ring-white dark:ring-gray-900 ${
+                        index <= step ? "bg-green-200" : "bg-gray-100"
+                      }`}
+                    >
+                      {index < step ? (
+                        <svg
+                          className="w-3.5 h-3.5 text-green-500 dark:text-green-400"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 16 12"
+                        >
+                          <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M1 5.917 5.724 10.5 15 1.5"
+                          />
+                        </svg>
+                      ) : null}
+                    </span>
+                    <h3 className="text-xl font-medium leading-tight">
+                      {index === 0 &&
+                        "Connection Established between Organization and Holder"}
+                      {index === 1 && "Proof Request is sent to the holder"}
+                      {index === 2 && "Holder shared proof presentation"}
+                      {index === 3 &&
+                        "Organization received proof presentation"}
+                      {index === 4 && "Verification process is complete"}
+                    </h3>
+                  </li>
+                </>
+              ))}
             </ol>
           </div>
         </div>

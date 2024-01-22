@@ -69,7 +69,6 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   };
 
   const handleQrCodeScanned = async (result: any) => {
-    console.log("result111", result);
     fetchShorteningUrlData(result);
     setStep(1);
     onScan(result);
@@ -90,7 +89,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
             setConnectionStatus(status);
             if (status === "completed") {
               clearInterval(checkConnectionInterval);
-
+        
               setStep(2);
               const credDefId =
                 "8SmUTa2PG5X9miX6LvoqU1:3:CL:265220:voter id Maharashtra";
