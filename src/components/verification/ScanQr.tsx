@@ -1,66 +1,22 @@
 "use client";
 
-import React, { useRef, useState } from "react";
-import QrScanner from "qr-scanner";
+import { useState } from "react";
 import OpenWebCam from "./OpenWebCam";
 import ScannedContentComponent from "./ScannedContent";
 
 const QrCode = () => {
   const [showWebCam, setShowWebCam] = useState(false);
-  const [scannedContent, setScannedContent] = useState<string | null>(null);
-  const [showScannedContent, setShowScannedContent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [scannedData, setScannedData] = useState("");
-
-  // const videoRef = useRef<HTMLVideoElement>(null);
-  const scannerRef = useRef<QrScanner | null>(null);
-
-  const handleQrCodeScanned = (result: any) => {
-    setScannedContent(result);
-    setShowWebCam(false);
-    setShowScannedContent(true);
-    setLoading(false);
-  };
-
-  // const startScanning = () => {
-    // setLoading(true);
-    // console.log("Starting QR scanner");
-  //   if (videoRef.current) {
-  //     try {
-  //       const scanner = new QrScanner(videoRef.current, (result) => {
-  //         console.log("Scanned Data:::", result);
-  //         handleQrCodeScanned(result);
-  //         setScannedData(result);
-  //       });
-  //       scanner.start();
-  //       scannerRef.current = scanner;
-  //       setLoading(true);
-  //       console.log("QR scanner started successfully. xyz-------");
-  //     } catch (error) {
-  //       console.error("Error starting QR scanner:", error);
-  //       setLoading(false);
-  //     }
-  //   }
-  // };
-
-  const stopScanning = () => {
-    if (scannerRef.current) {
-      scannerRef.current.stop();
-      console.log("QR scanner stopped.");
-      setLoading(false);
-      setShowWebCam(false);
-    }
-  };
+  const [step, setStep] = useState(0);
 
   const handleOpenWebCam = () => {
     setLoading(true)
     setShowWebCam(true);
-    // startScanning();
   };
 
   const handleCloseWebCam = () => {
     setShowWebCam(false);
-    stopScanning();
   };
 
   const showComponent = () => {
@@ -70,13 +26,16 @@ const QrCode = () => {
           <div>
             <OpenWebCam
               onCloseWebCam={handleCloseWebCam}
-              onScan={handleQrCodeScanned}
+              onScan={(value: string) => setScannedData(value)}
               scanData={scannedData}
+              handleStepChange={(value) => setStep(value)}
             />
           </div>
         );
-      case Boolean(scannedContent):
-        return <ScannedContentComponent content={scannedContent || ""} />;
+      case Boolean(scannedData):
+        return <ScannedContentComponent step={step} content={scannedData || ""} />;
+        // return <VerificationSteps steps={0} agentSpinupCall={false}  />;
+
       default:
         return (
           <div className="block">
@@ -165,12 +124,10 @@ const QrCode = () => {
                         d="M6.75 6.75h.75v.75h-.75v-.75ZM6.75 16.5h.75v.75h-.75v-.75ZM16.5 6.75h.75v.75h-.75v-.75ZM13.5 13.5h.75v.75h-.75v-.75ZM13.5 19.5h.75v.75h-.75v-.75ZM19.5 13.5h.75v.75h-.75v-.75ZM19.5 19.5h.75v.75h-.75v-.75ZM16.5 16.5h.75v.75h-.75v-.75Z"
                       />
                     </svg>
-                  {/* </> */}
-                {/* // )} */}
+                  {/* </>
+                 )}  */}
               </button>
               {/* )} */}
-
-              {/* <video ref={videoRef} className="w-150 h-150"></video> */}
             </div>
           </div>
         );

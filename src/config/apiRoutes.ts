@@ -20,6 +20,7 @@ export const apiRoutes = {
 
     connection: {
         getConnection: '/connections',
+        getShorteningUrl: '/invitation',
         getInvitationUrl: '/receive-invitation-url'
     }
 }

@@ -19,7 +19,7 @@ export const getFromLocalStorage = async (key: string) =>{
 
 export const sendProofRequest = async (payload: any) => {
 	const token = localStorage.getItem('session');
-	const orgId = await getFromLocalStorage('orgId');
+	const orgId = await envConfig.PUBLIC_ORGID;
 	const url = `${apiRoutes.org}/${orgId}${apiRoutes.verification.sendProofRequest}`;
 	const axiosPayload = {
 		url,
