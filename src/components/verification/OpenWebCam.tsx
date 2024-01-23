@@ -65,7 +65,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
         const { data } = response;
         await acceptInvitation(data?.data?.invitationPayload);
       }
-    } catch (err) {}
+    } catch (err) { }
   };
 
   const handleQrCodeScanned = async (result: any) => {
@@ -89,7 +89,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
             setConnectionStatus(status);
             if (status === "completed") {
               clearInterval(checkConnectionInterval);
-        
+
               setStep(2);
               const credDefId =
                 "8SmUTa2PG5X9miX6LvoqU1:3:CL:265220:voter id Maharashtra";
@@ -275,7 +275,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
       } else {
         setErrMsg(response as string);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const startScanning = () => {
@@ -315,7 +315,16 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
 
   return (
     <div className="px-12 py-4 md:px-24 lg:px-32 z-30 bg-white sticky top-[60px] border-b border-b-slate-50">
-      <video ref={videoRef} className="w-150 h-150"></video>
+      {
+        !videoRef.current &&
+        <div className="h-[400px]">
+          Loading...
+        </div>
+      }
+
+      <div className="w-full min-h-[400px] flex items-center" style={{height: 'calc(100vh - 13rem)'}}>
+        <video ref={videoRef} className="w-full h-[400px]"></video>
+      </div>
       <div className="flex items-center justify-center">
         <button
           onClick={stopScanning}
