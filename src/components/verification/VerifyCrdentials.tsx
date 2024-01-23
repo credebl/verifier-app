@@ -16,7 +16,7 @@ const VerifyCredentials = ({ token }: IProps) => {
 
   const showComponent = (): ReactNode => {
     return <div><QrCode/></div>;
-    // return <div><ScannedContentComponent content={''}/></div>;
+    // return <div><ScannedContentComponent content={''} step={0}/></div>;
   }
 
   return (

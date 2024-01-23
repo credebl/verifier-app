@@ -188,11 +188,11 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
                     </span>
                     <h3 className="text-xl font-medium leading-tight">
                       {index === 0 &&
-                        "Connection Established between Organization and Holder"}
-                      {index === 1 && "Proof Request is sent to the holder"}
-                      {index === 2 && "Holder shared proof presentation"}
+                        "Connection Established between University and user"}
+                      {index === 1 && "Certificate request is being received by the user"}
+                      {index === 2 && "Proof of certificate is being shared by the user"}
                       {index === 3 &&
-                        "Organization received proof presentation"}
+                        "Proof of certificate is being received and getting verified by the University"}
                       {index === 4 && "Verification process is complete"}
                     </h3>
                   </li>
