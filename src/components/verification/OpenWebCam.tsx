@@ -19,7 +19,7 @@ interface IOpenWebCamProps {
   onCloseWebCam: () => void;
   onScan: (result: string) => void;
   scanData: any;
-  handleStepChange: (step: number) => void;
+  //handleStepChange: (step: number) => void;
 }
 
 interface IProofRequest {
@@ -36,7 +36,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   onCloseWebCam,
   onScan,
   scanData,
-  handleStepChange,
+  //handleStepChange,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const scannerRef = useRef<QrScanner | null>(null);
@@ -57,7 +57,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
 
   const fetchShorteningUrlData = async (payload: string) => {
     try {
-      handleStepChange(2);
+      //handleStepChange(2);
       const invitationData = payload && payload?.split("/")[5];
       if (invitationData) {
         // const { data } = await getShorteningUrl(invitationData)
@@ -70,17 +70,16 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
 
   const handleQrCodeScanned = async (result: any) => {
     fetchShorteningUrlData(result);
-    setStep(1);
     onScan(result);
   };
 
   const getConnectionDetails = async (connectionId: string) => {
     try {
-      handleStepChange(4);
+      //handleStepChange(4);
       const orgId = await envConfig.PUBLIC_ORGID;
       if (!connectionStatus) {
         // wait 3 seconds to check connection status
-        await wait(3000);
+        // await wait(2000);
         const checkConnectionInterval = setInterval(async () => {
           const response = await getConnection(connectionId, orgId);
           const { data } = response as AxiosResponse;
@@ -90,33 +89,48 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
             if (status === "completed") {
               clearInterval(checkConnectionInterval);
 
-              setStep(2);
+              setStep(0);
               const credDefId =
-                "8SmUTa2PG5X9miX6LvoqU1:3:CL:265220:voter id Maharashtra";
-              const schemaId = "8SmUTa2PG5X9miX6LvoqU1:2:Voter Card:0.1.1";
+                "QqM7efrzUCbeMXk7Wce8Wz:3:CL:279534:MTech Grade Card";
+              const schemaId = "QqM7efrzUCbeMXk7Wce8Wz:2:Tribhuvan University Grade Card:1.1.1";
 
               const payload = {
                 connectionId: connectionId,
                 attributes: [
                   {
-                    attributeName: "name",
+                    attributeName: "sl_no",
                     credDefId: credDefId,
                     schemaId: schemaId,
                   },
                   {
-                    attributeName: "age",
+                    attributeName: "student_name",
                     credDefId: credDefId,
                     schemaId: schemaId,
                   },
+                  {
+                    attributeName: "university_name",
+                    credDefId: credDefId,
+                    schemaId: schemaId,
+                  },
+                  {
+                    attributeName: "current_semester_performance-SGA",
+                    credDefId: credDefId,
+                    schemaId: schemaId,
+                  },
+                  {
+                    attributeName: "cummulative_semester_performance-SGA",
+                    credDefId: credDefId,
+                    schemaId: schemaId,
+                  }, 
                 ],
-                comment: "",
+                comment: "Degree Certificate",
               };
               await createProofRequest(payload);
             }
           } else {
             setErrMsg(response as string);
           }
-        }, 3000);
+        }, 2000);
       }
     } catch (error) {
       throw error;
@@ -125,26 +139,32 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
 
   const getProofDetails = async (proofId: string) => {
     try {
-      handleStepChange(6);
+      //handleStepChange(6);
       const orgId = await envConfig.PUBLIC_ORGID;
 
-      await wait(3000);
+      // await wait(2000);
 
       const response = await getProofData(proofId, orgId);
       const { data } = response as AxiosResponse;
       if (data?.statusCode === apiStatusCodes?.API_STATUS_SUCCESS) {
         setProofStatus(data?.data?.state);
 
+        setInterval(async () => {
+
         const status = data?.data?.state;
         const proofId = data?.data?.id;
         if (status === "presentation-received") {
+          setStep(3);
           await verifyProofPresentation(proofId);
-        }
+        }        
 
+        }, 2000);
+        
         if (status === "done") {
           console.log("verification process is complete");
-        }
-      } else {
+        } 
+
+        } else {
         setErrMsg(response as string);
       }
     } catch (error) {
@@ -159,7 +179,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
       if (connectId && connectionStatus && connectionStatus !== "completed") {
         intervalOne = setInterval(async () => {
           await getConnectionDetails(connectId);
-        }, 3000);
+        }, 2000);
       } else if (connectionStatus === "completed") {
         setStep(2);
         return clearInterval(intervalOne);
@@ -170,53 +190,53 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
     }
   };
 
-  const fetchData = async (step: number) => {
-    switch (step) {
-      case 0:
-        console.log("STEP:::", 0);
-        startScanning();
-        break;
-      case 1:
-        console.log("STEP:::", 1);
-        AcceptinvitationStep();
-        break;
-      case 2:
-        console.log("STEP:::", 2);
-        break;
-      case 3:
-        console.log("STEP:::", 3);
-        console.log("ProofRequestStatusCheck");
-        if (!proofStatus && proofId) {
-          const status = await getProofDetails(proofId);
-          setStep(4);
-          console.log(7657657610, userData, proofId, status);
-        }
-        break;
+  // const fetchData = async (step: number) => {
+  //   switch (step) {
+  //     case 0:
+  //       console.log("STEP:::", 0);
+  //       startScanning();
+  //       break;
+  //     case 1:
+  //       console.log("STEP:::", 1);
+  //       AcceptinvitationStep();
+  //       break;
+  //     case 2:
+  //       console.log("STEP:::", 2);
+  //       break;
+  //     case 3:
+  //       console.log("STEP:::", 3);
+  //       console.log("ProofRequestStatusCheck");
+  //       if (!proofStatus && proofId) {
+  //         const status = await getProofDetails(proofId);
+  //         setStep(4);
+  //         console.log(7657657610, userData, proofId, status);
+  //       }
+  //       break;
 
-      case 4:
-        if (proofStatus === "presentation-received") {
-          const res = await verifyProofPresentation("");
-          console.log("verifyStatusResponse::", res);
-        }
-        console.log("VerifyProofRequest");
-        break;
+  //     case 4:
+  //       if (proofStatus === "presentation-received") {
+  //         const res = await verifyProofPresentation("");
+  //         console.log("verifyStatusResponse::", res);
+  //       }
+  //       console.log("VerifyProofRequest");
+  //       break;
 
-      case 5:
-        if (proofStatus === "done") {
-          const status = await getProofDetails(proofId);
-          console.log("DoneVerificationstatus:::", status);
-        }
-        break;
+  //     case 5:
+  //       if (proofStatus === "done") {
+  //         const status = await getProofDetails(proofId);
+  //         console.log("DoneVerificationstatus:::", status);
+  //       }
+  //       break;
 
-      default:
-        console.log("No any step");
-        break;
-    }
-  };
+  //     default:
+  //       console.log("No any step");
+  //       break;
+  //   }
+  // };
 
   const acceptInvitation = async (qrData: any) => {
     try {
-      handleStepChange(3);
+      //handleStepChange(3);
       const orgId = envConfig.PUBLIC_ORGID;
       const payloadData = qrData;
 
@@ -242,14 +262,15 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
 
   const createProofRequest = async (payload: any) => {
     try {
-      handleStepChange(5);
+      //handleStepChange(5);
       if (payload?.attributes?.length > 0) {
         const response = await sendProofRequest(payload);
         const { data } = response as AxiosResponse;
-
+    
         if (data?.statusCode === apiStatusCodes.API_STATUS_CREATED) {
           const proofId = data?.data?.id;
 
+          setStep(1);
           if (proofId) {
             setShowProofId(proofId);
             await getProofDetails(proofId);
@@ -265,11 +286,12 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
 
   const verifyProofPresentation = async (proofId: string) => {
     try {
-      handleStepChange(7);
+      //handleStepChange(7);
       const orgId = envConfig.PUBLIC_ORGID;
       const response = await verifyPresentation(proofId, orgId);
+      console.log(`response::${response}`);
       const { data } = response as AxiosResponse;
-
+      console.log(`data00::${data}`);
       if (data?.statusCode === apiStatusCodes.API_STATUS_CREATED) {
         console.log("presentation proof verified successfully");
       } else {
@@ -281,7 +303,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   const startScanning = () => {
     if (videoRef.current) {
       try {
-        handleStepChange(1);
+        //handleStepChange(1);
         const scanner = new QrScanner(videoRef.current, (result) => {
           handleQrCodeScanned(result);
         });
@@ -306,7 +328,8 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   };
 
   useEffect(() => {
-    fetchData(step);
+    // fetchData(step);
+    startScanning();
 
     return () => {
       stopScanning();

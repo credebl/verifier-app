@@ -45,6 +45,7 @@ export const getShorteningUrl = async (referenceId: string) => {
 
 export const receiveInvitationUrl = async (orgId: string, payload: any) => {
   const token = localStorage.getItem("session");
+  console.log(`token000:::::, ${token}`);
   const url = `${apiRoutes.org}/${orgId}${apiRoutes.connection.getInvitationUrl}`;
   const axiosPayload = {
     url,
