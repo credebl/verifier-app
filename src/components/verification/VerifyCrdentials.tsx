@@ -11,7 +11,6 @@ const VerifyCredentials = ({ token }: IProps) => {
   useEffect(() => {
     localStorage.setItem('session', token)
   }, [])
-console.log('token::', token);
   return (
     <div>
       <QrCode />
