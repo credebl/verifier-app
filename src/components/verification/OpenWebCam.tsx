@@ -231,8 +231,6 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
 
   return (
     <div className="px-12 py-4 md:px-24 lg:px-32 z-30 bg-white sticky top-[60px] border-b border-b-slate-50">
-      {!videoRef.current && <div className="h-[400px]">Loading...</div>}
-
       <div
         className="w-full min-h-[400px] flex items-center"
         style={{ height: "calc(100vh - 13rem)" }}
@@ -242,7 +240,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
       <div className="flex items-center justify-center">
         <button
           onClick={stopScanning}
-          className="mt-4 px-12 py-2 min-w-fit min-h-[43px] sm:min-w-[12rem] rounded-md text-center font-medium leading-5 border-indigo-700 hover:bg-secondary-700 bg-indigo-700 ring-2 text-black text-sm"
+          className="mt-4 px-12 py-2 min-w-fit min-h-[43px] sm:min-w-[12rem] rounded-md text-center font-medium leading-5 border-indigo-700 hover:bg-secondary-700 bg-blue-500 ring-2 text-black text-sm"
         >
           <span className="text-lg text-white">Stop Scanning</span>
         </button>

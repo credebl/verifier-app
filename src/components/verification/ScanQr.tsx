@@ -42,19 +42,19 @@ const QrCode = () => {
             <div className="flex items-center justify-center">
               <div className="flex flex-col justify-center items-center">
                 <img className="w-[230px]" src={envConfig.PUBLIC_ORG_LOGO} alt={envConfig.PUBLIC_ORGNAME} />
-                <span className="mt-2 self-center text-4xl font-semibold whitespace-nowrap text-black dark:text-white">
-                  {envConfig.PUBLIC_ORGNAME}
-                </span>
               </div>
             </div>
 
             <div className="flex items-center justify-center text-2xl font-medium text-gray-700 dark:text-white mt-10">
-              Verify an University Certificate
+              Verify an University Certificates
             </div>
+            <p className="text-1xl font-medium text-center text-gray-500 mt-10">
+              Verify Self-Sovereign Identity base certificates along with selective disclosure and zero-knowledge proofs (ZKP) <br/>
+            introduces a transformative paradigm for verifying university certificates. </p>
             <div className="flex items-center justify-center mt-10 flex-col gap-4">
               <button
                 onClick={handleOpenWebCam}
-                className="px-12 py-2 min-w-fit min-h-[43px] sm:min-w-[12rem] rounded-md text-center font-medium leading-5 border-indigo-700 flex items-center justify-center hover:bg-secondary-700 bg-indigo-700 ring-2 text-black text-sm"
+                className="px-12 py-2 min-w-fit min-h-[43px] sm:min-w-[12rem] rounded-md text-center font-medium leading-5 border-indigo-700 flex items-center justify-center hover:bg-secondary-700 bg-blue-500 ring-2 text-black text-sm"
               >
                 <span className="text-lg text-white">Scan QR Code</span>
                 <svg
