@@ -34,8 +34,6 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   const scannerRef = useRef<QrScanner | null>(null);
   const [step, setStep] = useState(0);
   const [connectionStatus, setConnectionStatus] = useState("");
-  const [showVerifieddata, setShowVerifieddata] = useState("");
-  const [verifiedData, setVerifiedData] = useState("");
 
   const fetchShorteningUrlData = async (payload: string) => {
     try {
@@ -117,10 +115,8 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
 
   const getProofDetails = async (proofId: string) => {
     try {
-      //handleStepChange(6);
       const orgId = await envConfig.PUBLIC_ORGID;
 
-      // await wait(2000);
       const proofResponse = setInterval(async () => {
         const response = await getProofData(proofId, orgId);
         const { data } = response as AxiosResponse;
@@ -184,7 +180,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   const fetchPresentationResult = async (orgId: string, proofId: string) => {
     const response = await fetchPresentationData(proofId, orgId);
     const { data } = response as AxiosResponse;
-    setVerifiedData(data?.data);
+    showVerifiedDetails(data?.data);
 
     console.log("fetch presentation response = ", response);
   };
