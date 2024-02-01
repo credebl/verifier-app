@@ -23,7 +23,6 @@ interface IOpenWebCamProps {
   handleStepChange: (step: number) => void;
 }
 
-
 const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   onCloseWebCam,
   onScan,
@@ -33,6 +32,8 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   const scannerRef = useRef<QrScanner | null>(null);
   const [step, setStep] = useState(0);
   const [connectionStatus, setConnectionStatus] = useState("");
+  const [showVerifieddata, setShowVerifieddata] = useState("");
+  const [verifiedData, setVerifiedData] = useState("");
 
   const fetchShorteningUrlData = async (payload: string) => {
     try {
@@ -122,13 +123,12 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
         const response = await getProofData(proofId, orgId);
         const { data } = response as AxiosResponse;
         if (data?.statusCode === apiStatusCodes?.API_STATUS_SUCCESS) {
-
           const status = data?.data?.state;
           const proofId = data?.data?.id;
           if (status === "presentation-received") {
             handleStepChange(4);
             setStep(4);
-            clearInterval(proofResponse)
+            clearInterval(proofResponse);
             await verifyProofPresentation(proofId);
           }
         }
@@ -180,16 +180,18 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   };
 
   const fetchPresentationResult = async (orgId: string, proofId: string) => {
-      const response = await fetchPresentationData(proofId, orgId);
-      console.log('first = ', response)
-  }
+    const response = await fetchPresentationData(proofId, orgId);
+    const { data } = response as AxiosResponse;
+    setVerifiedData(data?.data);
+    console.log("fetch presentation response = ", response);
+  };
 
   const verifyProofPresentation = async (proofId: string) => {
     try {
       const orgId = envConfig.PUBLIC_ORGID;
       const response = await verifyPresentation(proofId, orgId);
       const { data } = response as AxiosResponse;
-      if (data?.data?.state === 'done') {
+      if (data?.data?.state === "done") {
         handleStepChange(5);
         setStep(5);
         fetchPresentationResult(orgId, proofId);
