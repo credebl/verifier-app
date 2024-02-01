@@ -10,6 +10,7 @@ const QrCode = () => {
   const [loading, setLoading] = useState(false);
   const [scannedData, setScannedData] = useState("");
   const [step, setStep] = useState(0);
+  const [verifiedData, setVerifiedData] = useState("");
 
   const handleOpenWebCam = () => {
     setLoading(true)
@@ -30,11 +31,12 @@ const QrCode = () => {
               onScan={(value: string) => setScannedData(value)}
               scanData={scannedData}
               handleStepChange={(value) => setStep(value)}
+              showVerifiedDetails={(value) =>  setVerifiedData(value)}
             />
           </div>
         );
       case Boolean(scannedData):
-        return <ScannedContentComponent step={step} content={scannedData || ""} />;
+        return <ScannedContentComponent step={step} content={scannedData || ""} verifiedData={verifiedData}/>;
 
       default:
         return (

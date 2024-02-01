@@ -21,12 +21,14 @@ interface IOpenWebCamProps {
   onScan: (result: string) => void;
   scanData: any;
   handleStepChange: (step: number) => void;
+  showVerifiedDetails: (result: any) => void;
 }
 
 const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   onCloseWebCam,
   onScan,
   handleStepChange,
+  showVerifiedDetails
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const scannerRef = useRef<QrScanner | null>(null);
@@ -183,6 +185,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
     const response = await fetchPresentationData(proofId, orgId);
     const { data } = response as AxiosResponse;
     setVerifiedData(data?.data);
+
     console.log("fetch presentation response = ", response);
   };
 
