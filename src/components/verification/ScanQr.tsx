@@ -47,16 +47,15 @@ const QrCode = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-center text-2xl font-medium text-gray-700 dark:text-white mt-10">
+            <div className="flex items-center justify-center text-2xl font-medium text-gray-700 dark:text-white mt-6">
               Verify an University Certificates
             </div>
-            <p className="text-1xl font-medium text-center text-gray-500 mt-10">
-              Verify Self-Sovereign Identity base certificates along with selective disclosure and zero-knowledge proofs (ZKP) <br/>
-            introduces a transformative paradigm for verifying university certificates. </p>
+            <p className="text-1xl font-medium text-center text-gray-500 mt-6">
+              Verify Self-Sovereign Identity base certificates along with selective disclosure and zero-knowledge proofs (ZKP) introduces a transformative paradigm for verifying university certificates. </p>
             <div className="flex items-center justify-center mt-10 flex-col gap-4">
               <button
                 onClick={handleOpenWebCam}
-                className="px-12 py-2 min-w-fit min-h-[43px] sm:min-w-[12rem] rounded-md text-center font-medium leading-5 border-indigo-700 flex items-center justify-center hover:bg-secondary-700 bg-blue-500 ring-2 text-black text-sm"
+                className="px-12 py-2 min-w-fit min-h-[43px] sm:min-w-[12rem] rounded-md text-center font-medium leading-5 flex items-center justify-center hover:bg-secondary-700 bg-primary text-sm"
               >
                 <span className="text-lg text-white">Scan QR Code</span>
                 <svg
@@ -89,7 +88,7 @@ const QrCode = () => {
   };
 
   return (
-    <div className="px-12 py-4 md:px-24 lg:px-32 z-30 bg-white sticky top-[60px] border-b border-b-slate-50">
+    <div className="px-12 py-4 md:px-24 lg:px-32 z-30 sticky top-[60px] border-b border-b-slate-50">
       <div className="flex items-center justify-center">{showComponent()}</div>
     </div>
   );

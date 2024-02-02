@@ -231,7 +231,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   }, [step]);
 
   return (
-    <div className="px-12 py-4 md:px-24 lg:px-32 z-30 bg-white sticky top-[60px] border-b border-b-slate-50">
+    <div className="px-12 py-4 md:px-24 lg:px-32 z-30 sticky top-[60px] border-b border-b-slate-50">
       <div
         className="w-full min-h-[400px] flex items-center"
         style={{ height: "calc(100vh - 13rem)" }}

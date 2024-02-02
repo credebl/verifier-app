@@ -1,34 +1,78 @@
 ---
-import VerifyCredentials from "../components/verification/VerifyCrdentials";
+import Footer from "../components/Footer.astro";
+import { envConfig } from "../config/envConfig";
 import Layout from "../layouts/Layout.astro";
-import { getSupabaseClient, loginUser } from "../api/auth";
+import ScannedContentComponent from "../components/verification/ScannedContent"
 
-let token = Astro.cookies.get("session")?.value;
-
-const login = async () => {
-  const res = await loginUser();
-  await Astro.cookies.set("session", res);
-};
-
-if (token) {
-  const {
-    data: { user },
-    error,
-  } = await getSupabaseClient().auth.getUser(token);
-  if (!user) {
-    await login();
-  }
-} else {
-  await login();
-}
-
-token = Astro.cookies.get("session")?.value;
+const email = "rohit.acharya@gmail.com";
+const password = 'Password@123';
 ---
 
-<Layout title="Verifier App - CREDEBL">
-  <main>
-    <VerifyCredentials token={token || ""} client:load />
-  </main>
+<Layout title="DigitalEDU" noNavbar={true}>
+  <div class="flex items-center min-h-login p-4 bg-gray-100 lg:justify-center">
+    <div
+      class="flex flex-col overflow-hidden bg-white rounded-md shadow-lg max md:flex-row md:flex-1 lg:max-w-screen-md"
+    >
+      <div
+        class="p-4 py-6 text-white bg-blue-500 md:w-80 md:flex-shrink-0 md:flex md:flex-col md:items-center md:justify-evenly"
+      >
+        <div class="flex">
+          <img class="h-[100px] w-auto rounded-2xl" src={envConfig.PUBLIC_ORG_LOGO} />
+        </div>
+        <!-- <div class="my-3 text-4xl font-bold text-center">
+          <a href="#">{envConfig.PUBLIC_ORGNAME}</a>
+        </div> -->
+        <p class="mt-6 font-normal text-center text-gray-300 md:mt-0">
+          Embrace the future of education with our Digital Certification system—where achievements are authenticated, success is certified, and every credential tells a powerful story of accomplishment and excellence.
+        </p>
+      </div><div class="p-5 bg-white md:flex-1">
+        <h3 class="my-4 text-2xl font-semibold text-gray-700">
+          Verifier Login
+        </h3><form action="#" class="flex flex-col space-y-5">
+          <div class="flex flex-col space-y-1">
+            <label for="email" class="text-sm font-semibold text-gray-500"
+              >Email address</label
+            ><input
+              type="email"
+              id="email"
+              value={email}
+              class="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
+            />
+          </div><div class="flex flex-col space-y-1">
+            <div class="flex items-center justify-between">
+              <label for="password" class="text-sm font-semibold text-gray-500"
+                >Password</label
+              ><a
+                href="#"
+                class="text-sm text-blue-600 hover:underline focus:text-primary"
+                >Forgot Password?</a
+              >
+            </div><input
+              type="password"
+              id="password"
+              value={password}
+              class="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
+            />
+          </div><div class="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              id="remember"
+              class="w-4 h-4 transition duration-300 rounded focus:ring-2 focus:ring-offset-0 focus:outline-none focus:ring-blue-200"
+            /><label for="remember" class="text-sm font-semibold text-gray-500"
+              >Remember me</label
+            >
+          </div><div>
+            <a
+              role="button"
+              type="submit"
+              href="/dashboard"
+              class="w-full px-4 py-2 text-lg text-center font-semibold text-white transition-colors duration-300 bg-blue-500 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-blue-200 focus:ring-4"
+              >Log in</a
+            >
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <ScannedContentComponent content="" step={4} verifiedData="" />
 </Layout>
-
-<style></style>
