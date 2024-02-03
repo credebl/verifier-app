@@ -81,7 +81,8 @@ import Layout from "../layouts/Layout.astro";
       </div>
     </section>
     <section class="mt-6 flex w-full justify-end">
-      <button
+      <a
+        href="/payment"
         class="bg-primary px-6 py-4 text-white rounded-md hover:bg-blue-900 flex"
       >
         <svg
@@ -99,7 +100,14 @@ import Layout from "../layouts/Layout.astro";
           ></path>
         </svg>
         Purchase verification limits
-      </button>
+      </a>
     </section>
   </div>
 </Layout>
+
+<script>
+  const url = window.location.search;
+  if (url === "?purchase=true") {
+    localStorage.removeItem("purchase");
+  }
+</script>

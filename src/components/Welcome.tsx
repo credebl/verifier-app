@@ -8,7 +8,7 @@ function Welcome() {
                 <div>
                     <span className="text-3xl font-semibold text-white">Welcome!</span>
                     <span className="text-xl ml-4 text-gray-50">
-                        Rohit Acharya
+                        Ram Sharma
                     </span>
                 </div>
             </div>

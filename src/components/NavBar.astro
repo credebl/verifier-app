@@ -3,7 +3,7 @@ import { envConfig } from "../config/envConfig";
 ---
 
 <nav
-  class="fixed w-full top-0 z-50 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 px-6 py-1 lg:pl-3"
+  class="fixed w-full top-0 z-20 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 px-6 py-1 lg:pl-3"
 >
   <div class="flex items-center justify-between">
     <div class="flex items-center justify-start">
@@ -18,21 +18,23 @@ import { envConfig } from "../config/envConfig";
         }
       </a>
     </div>
-    <div class="flex flex-col items-end">
-      <p class="text-sm mb-1">rohit.acharya@gmail.com</p>
+    <div class="flex flex-col items-end ml-auto mr-2">
+      <p class="text-md">Ram Sharma</p>
       <p
         id="logout-btn"
-        class="w-fit text-primary hover:text-blue-600 hover:underline hover:underline-offset-3 cursor-pointer text-md rounded-md"
+        class="w-fit text-primary hover:text-blue-600 hover:underline hover:underline-offset-3 cursor-pointer text-sm rounded-md"
       >
         Logout
       </p>
+    </div>
+    <div>
+      <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="w-12 h-12 object-cover rounded-full border border-gray-100" />
     </div>
   </div>
 </nav>
 
 <script>
   const button = document.querySelector("#logout-btn");
-  console.log(765765, button);
   button?.addEventListener("click", () => {
     localStorage.clear();
     window.location.assign("/");

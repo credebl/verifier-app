@@ -42,7 +42,7 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
     });
   console.log("proofDetailsData::", proofDetailsData);
   return (
-    <div className="px-12 py-4 md:px-24 lg:px-32 z-30 sticky top-[60px] border-b border-b-slate-50">
+    <div className="px-12 py-4 md:px-24 lg:px-32 z-30 sticky top-[60px] border-b-slate-50 z-0">
       <div className="grid grid-cols-1 sm:grid-cols-2">
         <div className="flex items-center justify-start">
           <div className="block">

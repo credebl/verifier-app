@@ -45,7 +45,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
         const { data } = response;
         await acceptInvitation(data?.data?.invitationPayload);
       }
-    } catch (err) {}
+    } catch (err) { }
   };
 
   const handleQrCodeScanned = async (result: any) => {
@@ -196,7 +196,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
         fetchPresentationResult(orgId, proofId);
         console.log("presentation proof verified successfully");
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const startScanning = () => {
@@ -231,19 +231,22 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   }, [step]);
 
   return (
-    <div className="px-12 py-4 md:px-24 lg:px-32 z-30 sticky top-[60px] border-b border-b-slate-50">
+    <div className="px-12 md:px-24 lg:px-32 sticky top-[60px] z-0">
       <div
         className="w-full min-h-[400px] flex items-center"
         style={{ height: "calc(100vh - 13rem)" }}
       >
-        <video ref={videoRef} className="w-full h-[400px]"></video>
+        <video ref={videoRef} className="w-full h-[400px] object-cover"></video>
+      </div>
+      <div className="text-center">
+        Use a web camera to scan the QR code on your certificate, enabling you to verify your credential.
       </div>
       <div className="flex items-center justify-center">
         <button
           onClick={stopScanning}
-          className="mt-4 px-12 py-2 min-w-fit min-h-[43px] sm:min-w-[12rem] rounded-md text-center font-medium leading-5 border-indigo-700 hover:bg-secondary-700 bg-blue-500 ring-2 text-black text-sm"
+          className="mt-4 px-12 py-2 min-w-fit min-h-[43px] sm:min-w-[12rem] rounded-md text-center font-medium leading-5  hover:bg-secondary-700 bg-primary ring-2 text-black text-sm"
         >
-          <span className="text-lg text-white">Stop Scanning</span>
+          <span className="text-white">Stop Scanning</span>
         </button>
       </div>
     </div>

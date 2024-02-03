@@ -4,13 +4,20 @@ import { useState } from "react";
 import OpenWebCam from "./OpenWebCam";
 import ScannedContentComponent from "./ScannedContent";
 import { envConfig } from "../../config/envConfig";
+import ConfirmPopup from "../popup/ConfirmPopup";
 
 const QrCode = () => {
   const [showWebCam, setShowWebCam] = useState(false);
   const [loading, setLoading] = useState(false);
   const [scannedData, setScannedData] = useState("");
   const [step, setStep] = useState(0);
+  const [show, setShow] = useState(false);
   const [verifiedData, setVerifiedData] = useState("");
+
+  const handleStartVerification = () => {
+    setShow(false)
+    handleOpenWebCam()
+  }
 
   const handleOpenWebCam = () => {
     setLoading(true)
@@ -31,12 +38,12 @@ const QrCode = () => {
               onScan={(value: string) => setScannedData(value)}
               scanData={scannedData}
               handleStepChange={(value) => setStep(value)}
-              showVerifiedDetails={(value) =>  setVerifiedData(value)}
+              showVerifiedDetails={(value) => setVerifiedData(value)}
             />
           </div>
         );
       case Boolean(scannedData):
-        return <ScannedContentComponent step={step} content={scannedData || ""} verifiedData={verifiedData}/>;
+        return <ScannedContentComponent step={step} content={scannedData || ""} verifiedData={verifiedData} />;
 
       default:
         return (
@@ -48,16 +55,16 @@ const QrCode = () => {
             </div>
 
             <div className="flex items-center justify-center text-2xl font-medium text-gray-700 dark:text-white mt-6">
-              Verify an University Certificates
+              Securely Verify Educational Certificates
             </div>
-            <p className="text-1xl font-medium text-center text-gray-500 mt-6">
-              Verify Self-Sovereign Identity base certificates along with selective disclosure and zero-knowledge proofs (ZKP) introduces a transformative paradigm for verifying university certificates. </p>
+            <p className="text-1xl font-medium text-center text-gray-500 mt-6 max-w-screen-md">
+              Effortlessly authenticate educational certificates with a simple tap. Click on the "Start Verification" button below to securely verify the authenticity of educational certificates using an advanced privacy-preserving decentralized verification system. </p>
             <div className="flex items-center justify-center mt-10 flex-col gap-4">
               <button
-                onClick={handleOpenWebCam}
+                onClick={() => setShow(true)}
                 className="px-12 py-2 min-w-fit min-h-[43px] sm:min-w-[12rem] rounded-md text-center font-medium leading-5 flex items-center justify-center hover:bg-secondary-700 bg-primary text-sm"
               >
-                <span className="text-lg text-white">Scan QR Code</span>
+                <span className="text-white">Start Verification</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -88,8 +95,9 @@ const QrCode = () => {
   };
 
   return (
-    <div className="px-12 py-4 md:px-24 lg:px-32 z-30 sticky top-[60px] border-b border-b-slate-50">
+    <div className="px-12 py-4 md:px-24 lg:px-32 z-30 sticky top-[60px] border-b-slate-50 z-0">
       <div className="flex items-center justify-center">{showComponent()}</div>
+      <ConfirmPopup title="The video camera will open upon proceeding; do you wish to continue?" show={show} onSubmit={() => handleStartVerification()} onCancel={() => setShow(false)} />
     </div>
   );
 };
