@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import PaymentCard from "../components/PaymentCard.astro";
+import { envConfig } from "../config/envConfig";
 
 const summary = [
   {
@@ -31,7 +32,7 @@ const summary = [
 ];
 ---
 
-<Layout title="Payment">
+<Layout title={"Payment - " + envConfig.PUBLIC_ORGNAME}>
   <div class="p-6">
     <div class="divide-x divide-primary grid grid-cols-1 md:grid-cols-2 w-full sm:w-auto shadow-lg mx-auto rounded-xl bg-white p-6">
         <div>

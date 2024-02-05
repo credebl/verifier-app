@@ -1,9 +1,10 @@
 ---
 import Welcome from "../components/Welcome";
+import { envConfig } from "../config/envConfig";
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="Dashboard - CREDEBL">
+<Layout title={"Dashboard - " + envConfig.PUBLIC_ORGNAME}>
   <div class="p-6">
     <Welcome />
     <section class="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
