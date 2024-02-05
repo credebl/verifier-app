@@ -75,7 +75,16 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
 
   console.log("proofDetailsData::", proofDetailsData);
   return (
-    <div className="px-12 py-4 md:px-24 lg:px-32 z-30 bg-white sticky top-[60px] border-b border-b-slate-50">
+    <div className="px-12 py-4 md:px-24 lg:px-32 z-30 sticky top-[60px] border-b-slate-50 z-0">
+      <div className="flex items-center justify-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+        <a
+          href="/"
+          type="button"
+          className="text-white bg-blue-700 hover:bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-primary"
+        >
+          Verify another
+        </a>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2">
         <div className="flex items-center justify-start">
           <div className="block">
@@ -116,14 +125,12 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
                     </span>
                     <h3 className="text-xl font-medium leading-tight">
                       {index === 1 && "Connection request sent to the student"}
-                      {index === 2 &&
-                        "Making secure connection with student"}
+                      {index === 2 && "Making secure connection with student"}
                       {index === 3 &&
                         "Certificate being requested from the student"}
                       {index === 4 &&
                         "Proof of certificate is received from the student"}
-                      {index === 5 &&
-                        "Verifying the claims of the certificate"}
+                      {index === 5 && "Verifying the claims of the certificate"}
                     </h3>
                   </li>
                 ))}
@@ -132,10 +139,8 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
           </div>
         </div>
         <div className="p-10 flex w-full">
-          <div
-            className="relative p-4 w-full max-h-full"
-          >
-            <div className="relative rounded-lg shadow-xl border border-gray-200 dark:bg-gray-700 ">
+          <div className="relative p-4 w-full max-h-full">
+            <div className="bg-gradient-to-r from-primary to-secondary relative rounded-lg shadow-xl border border-gray-200 dark:bg-gray-700 ">
               {verified && (
                 <div className="flex justify-end mr-14 absolute -top-[83px] -right-[110px]">
                   <img
@@ -147,11 +152,11 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
               <div className="p-4 md:p-5 space-y-3">
                 <div className="flex h-full flex-col justify-center gap-0 sm:p-0">
                   <div className="flex border-b">
-                    <div className="w-8/12 font-semibold flex truncate md:pl-1 sm:mr-8 md:mr-0 text-green-500 dark:bg-gray-800 text-2xl mb-4 mt-4">
+                    <div className="w-8/12 font-semibold flex truncate md:pl-1 sm:mr-8 md:mr-0 text-white dark:bg-gray-800 text-2xl mb-4 mt-0">
                       Verified Data
                     </div>
                     <div className="w-4/12 font-semibold flex truncate sm:pl-4 text-primary-700 dark:bg-gray-800 text-xl">
-                      <a className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500 mb-4 mt-4">
+                      <a className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500 mb-4 mt-0">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="20"
@@ -170,10 +175,10 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
                   </div>
 
                   <div className="flex mb-2 mt-2">
-                    <div className="w-8/12 font-semibold flex truncate md:pl-1 sm:mr-8 md:mr-0 text-primary-700 dark:bg-gray-800 text-xl">
-                      Attributes
+                    <div className="w-8/12 font-semibold flex truncate md:pl-1 sm:mr-8 md:mr-0 text-white dark:bg-gray-800 text-xl">
+                      Claims
                     </div>
-                    <div className="w-4/12 font-semibold flex truncate sm:pl-4 text-primary-700 dark:bg-gray-800 text-xl">
+                    <div className="w-4/12 font-semibold flex truncate sm:pl-4 text-white dark:bg-gray-800 text-xl">
                       Values
                     </div>
                   </div>
@@ -182,13 +187,13 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
                     (item: { name: string; value: string }, i: any) => (
                       <div
                         key={item.name + i}
-                        className="flex w-full border-b last:border-b-0"
+                        className="flex w-full text-white border-b last:border-b-0"
                       >
                         <div className={`flex w-full text-lg`}>
-                          <div className="w-8/12 m-1 p-1 text-start text-gray-700 dark:text-white text-lg break-words shrink-0">
+                          <div className="w-8/12 m-1 p-1 text-start dark:text-white text-lg break-words shrink-0">
                             {item.name}
                           </div>
-                          <div className="w-4/12 m-1 truncate p-1 flex justify-start text-gray-700 dark:text-white text-lg">
+                          <div className="w-4/12 m-1 truncate p-1 flex justify-start dark:text-white text-lg">
                             {loading && !item.value ? (
                               <div role="status">
                                 <svg
@@ -222,7 +227,7 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
                   <a
                     href="/"
                     type="button"
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    className="text-white bg-blue-700 hover:bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-primary"
                   >
                     Start over
                   </a>
