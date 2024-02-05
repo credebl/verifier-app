@@ -16,6 +16,7 @@ import {
 import type { AxiosResponse } from "axios";
 import { apiStatusCodes } from "../../config/commonConstants";
 import { envConfig } from "../../config/envConfig";
+import { Attributes } from "../../../common/common.constants";
 interface IOpenWebCamProps {
   onCloseWebCam: () => void;
   onScan: (result: string) => void;
@@ -76,27 +77,27 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
                 connectionId: connectionId,
                 attributes: [
                   {
-                    attributeName: "sl_no",
+                    attributeName: Attributes.SL_NO,
                     credDefId: credDefId,
                     schemaId: schemaId,
                   },
                   {
-                    attributeName: "student_name",
+                    attributeName: Attributes.STUDENT_NAME,
                     credDefId: credDefId,
                     schemaId: schemaId,
                   },
                   {
-                    attributeName: "university_name",
+                    attributeName: Attributes.UNIVERSITY_NAME,
                     credDefId: credDefId,
                     schemaId: schemaId,
                   },
                   {
-                    attributeName: "current_semester_performance-SGA",
+                    attributeName: Attributes.CURRENT_SEMESTER_PERFORMANCE_SGA,
                     credDefId: credDefId,
                     schemaId: schemaId,
                   },
                   {
-                    attributeName: "cummulative_semester_performance-SGA",
+                    attributeName: Attributes.CUMMULATIVE_SEMESTER_PERFORMANCE_SGA,
                     credDefId: credDefId,
                     schemaId: schemaId,
                   },
