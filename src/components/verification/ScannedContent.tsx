@@ -56,7 +56,7 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
         },
       ]);
       setVerified(true);
-    }, 5000);
+    }, 2000);
   }, []);
 
   const proofDetailsData =
@@ -73,9 +73,9 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
       })[0];
     });
 
-  console.log("proofDetailsData::", proofDetailsData);
+  console.log(1234, "proofDetailsData::", proofDetailsData, "Verified", data);
   return (
-    <div className="px-12 py-4 md:px-24 lg:px-32 z-30 sticky top-[60px] border-b-slate-50 z-0">
+    <div className="py-4 sticky top-[60px] border-b-slate-50 z-0">
       <div className="flex items-center justify-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
         <a
           href="/"
@@ -85,7 +85,7 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
           Verify another
         </a>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 px-8 sm:px-24">
         <div className="flex items-center justify-start">
           <div className="block">
             <div className="mt-10 text-3xl font-medium text-gray-700 dark:text-white">
@@ -96,14 +96,12 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
                 {[1, 2, 3, 4, 5].map((index) => (
                   <li
                     key={index}
-                    className={`mb-20 last:-mb-4 ml-6 ${
-                      index <= step ? "text-gray-700" : ""
-                    }`}
+                    className={`mb-16 last:-mb-4 ml-6 ${index <= step ? "text-gray-700" : ""
+                      }`}
                   >
                     <span
-                      className={`absolute flex items-center justify-center w-8 h-8 rounded-full -start-4 ring-4 ring-white dark:ring-gray-900 ${
-                        index <= step ? "bg-green-200" : "bg-gray-100"
-                      }`}
+                      className={`absolute flex items-center justify-center w-8 h-8 rounded-full -start-4 ring-4 ring-white dark:ring-gray-900 ${index <= step ? "bg-green-200" : "bg-gray-100"
+                        }`}
                     >
                       {index <= step ? (
                         <svg
@@ -130,7 +128,7 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
                         "Certificate being requested from the student"}
                       {index === 4 &&
                         "Proof of certificate is received from the student"}
-                      {index === 5 && "Verifying the claims of the certificate"}
+                      {index === 5 && `${verified ? "Verified" : "Verifying"} the claims of the certificate`}
                     </h3>
                   </li>
                 ))}
@@ -138,7 +136,7 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
             </div>
           </div>
         </div>
-        <div className="p-10 flex w-full">
+        <div className="py-12 flex w-full">
           <div className="relative p-4 w-full max-h-full">
             <div className="bg-gradient-to-r from-primary to-secondary relative rounded-lg shadow-xl border border-gray-200 dark:bg-gray-700 ">
               {verified && (
@@ -151,26 +149,23 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
               )}
               <div className="p-4 md:p-5 space-y-3">
                 <div className="flex h-full flex-col justify-center gap-0 sm:p-0">
-                  <div className="flex border-b">
-                    <div className="w-8/12 font-semibold flex truncate md:pl-1 sm:mr-8 md:mr-0 text-white dark:bg-gray-800 text-2xl mb-4 mt-0">
+                  <div className="flex border-b items-center">
+                    <div className="font-semibold flex truncate md:pl-1 sm:mr-8 md:mr-0 text-white dark:bg-gray-800 text-2xl mb-4 mt-0 shrink-0">
                       Verified Data
                     </div>
-                    <div className="w-4/12 font-semibold flex truncate sm:pl-4 text-primary-700 dark:bg-gray-800 text-xl">
-                      <a className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500 mb-4 mt-0">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="20"
-                          height="20"
-                          fill="none"
-                          viewBox="0 0 20 20"
-                          className="mt-[6px] ml-3 dark:text-white text-primary-700"
-                        >
-                          <path
-                            fill="currentColor"
-                            d="M9.168 14.167h1.667v-5H9.168v5Zm.833-6.667c.236 0 .434-.08.594-.24a.803.803 0 0 0 .24-.593.806.806 0 0 0-.24-.594.807.807 0 0 0-.594-.24.806.806 0 0 0-.593.24.806.806 0 0 0-.24.594c0 .236.08.434.24.594.16.16.357.24.593.24Zm0 10.834a8.115 8.115 0 0 1-3.25-.657 8.415 8.415 0 0 1-2.646-1.78 8.416 8.416 0 0 1-1.78-2.647A8.115 8.115 0 0 1 1.667 10c0-1.152.219-2.236.656-3.25a8.416 8.416 0 0 1 1.781-2.646 8.415 8.415 0 0 1 2.646-1.78A8.115 8.115 0 0 1 10 1.667c1.153 0 2.236.219 3.25.656a8.415 8.415 0 0 1 2.646 1.781 8.416 8.416 0 0 1 1.781 2.646 8.115 8.115 0 0 1 .657 3.25 8.115 8.115 0 0 1-.657 3.25 8.416 8.416 0 0 1-1.78 2.646 8.415 8.415 0 0 1-2.647 1.781 8.115 8.115 0 0 1-3.25.657Zm0-1.667c1.861 0 3.438-.646 4.73-1.938 1.291-1.291 1.937-2.868 1.937-4.729 0-1.86-.646-3.437-1.938-4.729-1.291-1.292-2.868-1.937-4.729-1.937-1.86 0-3.437.645-4.729 1.937-1.292 1.292-1.937 2.868-1.937 4.73 0 1.86.645 3.437 1.937 4.729 1.292 1.291 2.868 1.937 4.73 1.937Z"
-                          />
+                    <div className='w-full'>
+                      <button className='group' type="button" data-tooltip-target="tooltip-top" data-tooltip-placement="bottom">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6 mb-2 text-white ml-2 cursor-pointer">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
                         </svg>
-                      </a>
+                        <div className="opacity-0 group-hover:!opacity-100 invisible group-hover:visible inline-block absolute z-10 px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm tooltip dark:bg-gray-700 text-start">
+                          <ol style={{ listStyle: "desc" }} className='pl-4'>
+                            <li>Download the CSV file or utilize the existing one</li>
+                            <li>Update CSV file with credential data</li>
+                            <li>Upload CSV file</li>
+                          </ol>
+                        </div>
+                      </button>
                     </div>
                   </div>
 
@@ -214,7 +209,7 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
                                 </svg>
                               </div>
                             ) : (
-                              <>{item.value}</>
+                              <div>{item.value}</div>
                             )}
                           </div>
                         </div>

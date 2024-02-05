@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react'
 import QrCode from './ScanQr';
-import ScannedContentComponent from './ScannedContent';
 
 interface IProps {
   token: string;
@@ -15,7 +14,6 @@ const VerifyCredentials = ({ token }: IProps) => {
   return (
     <div>
       <QrCode />
-      <ScannedContentComponent verifiedData={undefined} content={''} step={5}/>
     </div>
   )
 }
