@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Attributes } from "../../../common/common.constants";
+import { ConvertToTitleCase } from "../../config/ConvertToTitleCase";
 
 interface ScannedContentComponentProps {
   verifiedData: any;
@@ -37,27 +38,11 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
 
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => {
-      setData([
-        {
-          [`${Attributes.SL_NO}`]: "ertyu",
-        },
-        {
-          [`${Attributes.STUDENT_NAME}`]: "rthjk",
-        },
-        {
-          [`${Attributes.UNIVERSITY_NAME}`]: "fghjk",
-        },
-        {
-          [`${Attributes.CURRENT_SEMESTER_PERFORMANCE_SGA}`]: "dfghj",
-        },
-        {
-          [`${Attributes.CUMMULATIVE_SEMESTER_PERFORMANCE_SGA}`]: "dfghj",
-        },
-      ]);
-      setVerified(true);
-    }, 2000);
-  }, []);
+      if(verifiedData){
+        setData(verifiedData);
+        setVerified(true);
+      }
+  }, [verifiedData]);
 
   const proofDetailsData =
     data?.length &&
@@ -75,17 +60,17 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
 
   console.log(1234, "proofDetailsData::", proofDetailsData, "Verified", data);
   return (
-    <div className="py-4 sticky top-[60px] border-b-slate-50 z-0">
-      <div className="flex items-center justify-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+    <div className="py-4 px-12 sticky top-[60px] w-full border-b-slate-50 z-0">
+      <div className="flex items-center justify-center p-4 md:p-5 border-0 border-gray-200 rounded-b dark:border-gray-600">
         <a
-          href="/"
+          href="/verify"
           type="button"
           className="text-white bg-blue-700 hover:bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-primary"
         >
           Verify another
         </a>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 px-8 sm:px-24">
+      <div className="grid grid-cols-1 sm:grid-cols-2">
         <div className="flex items-center justify-start">
           <div className="block">
             <div className="mt-10 text-3xl font-medium text-gray-700 dark:text-white">
@@ -186,7 +171,8 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
                       >
                         <div className={`flex w-full text-lg`}>
                           <div className="w-8/12 m-1 p-1 text-start dark:text-white text-lg break-words shrink-0">
-                            {item.name}
+                            {/* {item.name} */}
+                            {ConvertToTitleCase(item.name)}
                           </div>
                           <div className="w-4/12 m-1 truncate p-1 flex justify-start dark:text-white text-lg">
                             {loading && !item.value ? (

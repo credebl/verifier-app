@@ -32,7 +32,7 @@ const QrCode = () => {
     switch (true) {
       case showWebCam:
         return (
-          <div>
+          <div className="md:px-24 lg:px-32 ">
             <OpenWebCam
               onCloseWebCam={handleCloseWebCam}
               onScan={(value: string) => setScannedData(value)}
@@ -95,7 +95,7 @@ const QrCode = () => {
   };
 
   return (
-    <div className="px-12 py-4 md:px-24 lg:px-32 z-30 sticky top-[60px] border-b-slate-50 z-0">
+    <div className="py-4 px-8 sticky top-[60px] border-b-slate-50 z-0">
       <div className="flex items-center justify-center">{showComponent()}</div>
       <ConfirmPopup title="The video camera will open upon proceeding; do you wish to continue?" show={show} onSubmit={() => handleStartVerification()} onCancel={() => setShow(false)} />
     </div>
