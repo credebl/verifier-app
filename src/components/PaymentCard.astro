@@ -78,28 +78,37 @@
             alt=""
           />
         </li>
+        <li class="ml-5">
+          <img
+            class="w-auto h-10"
+            src="/public/rupay.png"
+            alt=""
+          />
+        </li>
       </ul>
     </header>
     <main class="mt-4 p-4 !pb-0">
       <!-- <h1 class="text-xl font-semibold text-gray-700 text-center">
         Card payment
       </h1> -->
-      <div class="">
+      <!-- <div class=""> -->
+        <div x-data="{ cardholder: 'bhavana', cardNumber: '7652372398743', expired: { month: '10', year: '2026' }, securityCode: '' }">
+
         <div class="my-3">
           <input
             type="text"
             class="block w-full px-5 py-2 border rounded-lg bg-white shadow-lg placeholder-gray-400 text-gray-700 focus:ring focus:outline-none"
-            placeholder="Card holder"
+            placeholder="Enter card holder name"
             maxlength="22"
             x-model="cardholder"
-            value="Ram Sharma"
+            value="bhavana"
           />
         </div>
         <div class="my-3">
           <input
             type="text"
             class="block w-full px-5 py-2 border rounded-lg bg-white shadow-lg placeholder-gray-400 text-gray-700 focus:ring focus:outline-none"
-            placeholder="Card number"
+            placeholder="Enter card number"
             x-model="cardNumber"
             x-on:keydown="format()"
             x-on:keyup="isValid()"
@@ -149,7 +158,7 @@
             <input
               type="text"
               class="block w-full col-span-2 px-5 py-2 border rounded-lg bg-white shadow-lg placeholder-gray-400 text-gray-700 focus:ring focus:outline-none"
-              placeholder="Security code"
+              placeholder="CVV"
               maxlength="3"
               x-model="securityCode"
               x-on:focus="card = 'back'"

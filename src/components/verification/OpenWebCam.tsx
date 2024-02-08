@@ -34,6 +34,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const scannerRef = useRef<QrScanner | null>(null);
   const [step, setStep] = useState(0);
+  // const [cameraAvailable, setCameraAvailable] = useState(true); 
   const [connectionStatus, setConnectionStatus] = useState("");
 
   const fetchShorteningUrlData = async (payload: string) => {
@@ -213,6 +214,11 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
         console.error("Error starting QR scanner:", error);
       }
     }
+
+    if (videoRef.current === null) {
+       console.log('No camera found');
+       alert('No camera found');
+    }
   };
 
   const stopScanning = () => {
@@ -237,10 +243,20 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
         className="w-full min-h-[400px] flex items-center"
         style={{ height: "calc(100vh - 13rem)" }}
       >
-        <video ref={videoRef} className="w-full h-[400px] object-cover"></video>
+        <div className="relative w-full">
+          <video
+            ref={videoRef}
+            className="w-full h-[400px] object-cover"
+          ></video>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-64 h-64 border-4 border-yellow-300 border-dashed"></div>
+            {/* <div>No camera found. Please ensure that a camera is connected to your device and try again.</div> */}
+          </div>
+        </div>
       </div>
+
       <div className="text-center">
-        Use a web camera to scan the QR code on your certificate, enabling you to verify your credential.
+        Scan the QR code from the certificate on the camera to get it verified.
       </div>
       <div className="flex items-center justify-center">
         <button

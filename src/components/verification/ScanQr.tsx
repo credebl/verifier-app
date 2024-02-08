@@ -47,18 +47,35 @@ const QrCode = () => {
 
       default:
         return (
-          <div className="flex flex-col justify-center" style={{ minHeight: 'calc(100vh - 6rem)' }} >
+          <div
+            className="flex flex-col justify-center"
+            style={{ minHeight: "calc(100vh - 6rem)" }}
+          >
             <div className="flex items-center justify-center">
               <div className="flex flex-col justify-center items-center">
-                <img className="w-[230px]" src={envConfig.PUBLIC_ORG_LOGO} alt={envConfig.PUBLIC_ORGNAME} />
+                <img
+                  className="w-[230px]"
+                  src={envConfig.PUBLIC_ORG_LOGO}
+                  alt={envConfig.PUBLIC_ORGNAME}
+                />
               </div>
             </div>
 
             <div className="flex items-center justify-center text-2xl font-medium text-gray-700 dark:text-white mt-6">
               Securely Verify Educational Certificates
             </div>
-            <p className="text-1xl font-medium text-center text-gray-500 mt-6 max-w-screen-md">
-              Effortlessly authenticate educational certificates with a simple tap. Click on the "Start Verification" button below to securely verify the authenticity of educational certificates using an advanced privacy-preserving decentralized verification system. </p>
+            <p className="text-md font-medium text-center text-gray-500 mt-6 max-w-screen-md">
+              Effortless and automated verification of educational certificates
+              with a one click verification. Blockchain powered digital issuance
+              & verification brings more trust in terms of seal of authenticity
+              about issuer, recipient of the certificate (student), intactness
+              of the certificate (for any alteration or forging) and its
+              validity (revoked or not) - all of this instantaneously and at a
+              click of a button! <br/>All this verification is privacy preserving
+              which works only upon the consent from the student. As you proceed
+              with verification, it will ask to present the QR code from the
+              certificate to get verified instantaneously.
+            </p>
             <div className="flex items-center justify-center mt-10 flex-col gap-4">
               <button
                 onClick={() => setShow(true)}
@@ -97,7 +114,7 @@ const QrCode = () => {
   return (
     <div className="py-4 px-8 sticky top-[60px] border-b-slate-50 z-0">
       <div className="flex items-center justify-center">{showComponent()}</div>
-      <ConfirmPopup title="The video camera will open upon proceeding; do you wish to continue?" show={show} onSubmit={() => handleStartVerification()} onCancel={() => setShow(false)} />
+      <ConfirmPopup title="Please provide access to open the camera in the browser for scanning QR code from the certificate." show={show} onSubmit={() => handleStartVerification()} onCancel={() => setShow(false)} />
     </div>
   );
 };
