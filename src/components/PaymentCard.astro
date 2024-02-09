@@ -21,11 +21,11 @@
         >
           <p
             class="number mb-5 sm:text-xl"
-            x-text="cardNumber !== '' ? cardNumber : '0000 0000 0000 0000'"
+            x-text="cardNumber !== '' ? cardNumber : '7652 3723 9874 3342'"
           >
           </p>
           <div class="flex flex-row justify-between">
-            <p x-text="cardholder !== '' ? cardholder : 'Card holder'"></p>
+            <p x-text="cardholder !== '' ? cardholder : 'Ram Sharma'"></p>
             <div class="">
               <span x-text="expired.month"></span>
               <span x-show="expired.month !== ''">/</span>
@@ -52,19 +52,26 @@
           <div
             class="border border-white w-16 h-9 flex justify-center items-center"
           >
-            <p x-text="securityCode !== '' ? securityCode : 'code'"></p>
+            <p x-text="securityCode !== '' ? securityCode : '108'"></p>
           </div>
         </div>
       </div>
       <ul class="flex">
-        <li class="mx-2">
+        <li class="">
+          <img
+            class="w-auto h-12"
+            src="/rupay.png"
+            alt=""
+          />
+        </li>
+        <li class="ml-5">
           <img
             class="w-16"
             src="https://www.computop-paygate.com/Templates/imagesaboutYou_desktop/images/computop.png"
             alt=""
           />
         </li>
-        <li class="mx-2">
+        <li class="ml-5">
           <img
             class="w-14"
             src="https://www.computop-paygate.com/Templates/imagesaboutYou_desktop/images/verified-by-visa.png"
@@ -78,21 +85,14 @@
             alt=""
           />
         </li>
-        <li class="ml-5">
-          <img
-            class="w-auto h-10"
-            src="/public/rupay.png"
-            alt=""
-          />
-        </li>
       </ul>
     </header>
-    <main class="mt-4 p-4 !pb-0">
+    <main class="px-4 !pb-0">
       <!-- <h1 class="text-xl font-semibold text-gray-700 text-center">
         Card payment
       </h1> -->
       <!-- <div class=""> -->
-        <div x-data="{ cardholder: 'bhavana', cardNumber: '7652372398743', expired: { month: '10', year: '2026' }, securityCode: '' }">
+        <div x-data="{ cardholder: 'Ram Sharma', cardNumber: '7652 3723 9874 3342', expired: { month: '10', year: '2026' }, securityCode: '108' }">
 
         <div class="my-3">
           <input
@@ -163,6 +163,7 @@
               x-model="securityCode"
               x-on:focus="card = 'back'"
               x-on:blur="card = 'front'"
+              value="108"
             />
           </div>
         </div>
@@ -172,7 +173,6 @@
       <button
         id="paynow"
         class="submit-button flex justify-center px-4 py-3 rounded-md bg-gradient-to-r from-primary to-secondary text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors disabled:opacity-60"
-        x-bind:disabled="!isValid"
       >
         Pay now
         <div

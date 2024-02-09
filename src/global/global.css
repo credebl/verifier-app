@@ -32,7 +32,7 @@
 }
 
 .min-h-login {
-  min-height: calc(100vh - 4rem);
+  min-height: calc(100vh - 5rem);
 }
 
 .bg-overlay {

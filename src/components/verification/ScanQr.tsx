@@ -81,7 +81,7 @@ const QrCode = () => {
                 onClick={() => setShow(true)}
                 className="px-12 py-2 min-w-fit min-h-[43px] sm:min-w-[12rem] rounded-md text-center font-medium leading-5 flex items-center justify-center hover:bg-secondary-700 bg-primary text-sm"
               >
-                <span className="text-white">Start Verification</span>
+                <span className="text-white">Start Verify</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
