@@ -21,7 +21,7 @@ const SuccessPopup = ({ show, onSubmit, onCancel, title }: IProps) => {
         className={`${showPopup ? "flex" : "hidden"} overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-0rem)] max-h-full`}
       >
         <div className='bg-overlay w-full h-full absolute'></div>
-        <div className="relative p-4 w-full max-w-md max-h-full">
+        <div className="section-from-top relative p-4 w-full max-w-md max-h-full">
           <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <button
               type="button"
@@ -49,7 +49,7 @@ const SuccessPopup = ({ show, onSubmit, onCancel, title }: IProps) => {
               <span className="sr-only">Close modal</span>
             </button>
             <div className="p-4 md:p-5 text-center">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="mx-auto mb-4 text-green-400 w-20 h-20 dark:text-green-200">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="p-4 rounded-xl mx-auto mb-4 text-green-400 bg-green-50 w-24 h-24 dark:text-green-200">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
               </svg>
 
@@ -61,7 +61,7 @@ const SuccessPopup = ({ show, onSubmit, onCancel, title }: IProps) => {
               <button
                 data-modal-hide="popup-modal"
                 type="button"
-                className="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center ms-4"
+                className="btn-hover text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center ms-4"
                 onClick={() => {
                   onCancel()
                   setShowPopup(false)

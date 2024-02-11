@@ -34,7 +34,8 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const scannerRef = useRef<QrScanner | null>(null);
   const [step, setStep] = useState(0);
-  // const [cameraAvailable, setCameraAvailable] = useState(true); 
+  const [cameraAvailable, setCameraAvailable] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [connectionStatus, setConnectionStatus] = useState("");
 
   const fetchShorteningUrlData = async (payload: string) => {
@@ -216,8 +217,8 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
     }
 
     if (videoRef.current === null) {
-       console.log('No camera found');
-       alert('No camera found');
+      console.log('No camera found');
+      alert('No camera found');
     }
   };
 
@@ -237,36 +238,66 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
     };
   }, [step]);
 
+
+  useEffect(() => {
+    if (navigator?.mediaDevices?.getUserMedia) {
+      navigator?.mediaDevices?.getUserMedia({ video: true })
+        .then(function (stream) {
+          setLoading(false)
+          console.log('Camera access granted!');
+          setCameraAvailable(true)
+        })
+        .catch(function (error) {
+          setLoading(false)
+          console.log('Camera access denied or error:', error);
+          setCameraAvailable(false)
+        });
+    } else {
+      setLoading(false)
+      console.log('getUserMedia is not supported in this browser.');
+      // Do something if getUserMedia is not supported
+      setCameraAvailable(false)
+    }
+  }, [])
+
+  console.log(34324, videoRef, cameraAvailable)
   return (
-    <div className="px-12 md:px-24 lg:px-32 sticky top-[60px] z-0">
-      <div
-        className="w-full min-h-[400px] flex items-center"
-        style={{ height: "calc(100vh - 13rem)" }}
-      >
-        <div className="relative w-full">
-          <video
-            ref={videoRef}
-            className="w-full h-[400px] object-cover"
-          ></video>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-64 h-64 border-4 border-yellow-300 border-dashed"></div>
-            {/* <div>No camera found. Please ensure that a camera is connected to your device and try again.</div> */}
+    <div>
+      <div className={`px-12 md:px-24 lg:px-32 sticky top-[60px] z-0 ${!cameraAvailable && 'hidden'}`}>
+        <div
+          className={`w-full min-h-[400px] flex items-center`}
+          style={{ height: "calc(100vh - 13rem)" }}
+        >
+          <div className="relative w-full">
+            <video
+              ref={videoRef}
+              className="w-full h-[400px] object-cover"
+            ></video>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-64 h-64 border-4 border-yellow-300 border-dashed"></div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="text-center">
-        Scan the QR code from the certificate on the camera to get it verified.
+        <div className="text-center">
+          Scan the QR code from the certificate on the camera to get it verified.
+        </div>
+        <div className="flex items-center justify-center">
+          <button
+            onClick={stopScanning}
+            className="btn-hover mt-4 px-12 py-2 min-w-fit min-h-[43px] sm:min-w-[12rem] rounded-md text-center font-medium leading-5  hover:bg-secondary-700 bg-primary ring-2 text-black text-sm"
+          >
+            <span className="text-white">Stop Scanning</span>
+          </button>
+        </div>
       </div>
-      <div className="flex items-center justify-center">
-        <button
-          onClick={stopScanning}
-          className="mt-4 px-12 py-2 min-w-fit min-h-[43px] sm:min-w-[12rem] rounded-md text-center font-medium leading-5  hover:bg-secondary-700 bg-primary ring-2 text-black text-sm"
-        >
-          <span className="text-white">Stop Scanning</span>
-        </button>
+      <div style={{ height: "calc(100vh - 13rem)" }} className="flex items-center justify-center">
+        <div className={`${cameraAvailable ? "hidden" : "block"}  bg-red-100 text-sm text-red-500 border border-red-300 rounded-md p-4`}>
+          Please grant permission to access your camera or ensure your webcam is connected.
+        </div>
       </div>
     </div>
+
   );
 };
 

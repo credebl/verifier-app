@@ -9,9 +9,9 @@ import Layout from "../layouts/Layout.astro";
 <Layout title={"Dashboard - " + envConfig.PUBLIC_ORGNAME}>
   <div class="p-6">
     <Welcome />
-    <section class="mt-6 p-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 divide-x bg-white shadow-lg border border-gray-200 rounded-lg">
+    <section class="dashboard-card mt-6 p-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 divide-x bg-white shadow-lg border border-gray-200 rounded-lg">
       <div
-        class="flex gap-4"
+        class="card-item flex gap-4"
       >
         <div
           class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 bg-[#E3E0EF] rounded-xl p-[0.75rem]"
@@ -27,7 +27,7 @@ import Layout from "../layouts/Layout.astro";
         </div>
       </div>
       <div
-        class="pl-6 flex gap-4"
+        class="card-item pl-6 flex gap-4"
       >
       <div
         class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 bg-[#EAF9FF] rounded-xl"
@@ -48,7 +48,7 @@ import Layout from "../layouts/Layout.astro";
         </div>
       </div>
       <div
-        class="pl-6 flex gap-4"
+        class="card-item pl-6 flex gap-4"
       >
       <div
         class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 bg-[#EFE6E0] rounded-xl"
@@ -85,7 +85,7 @@ import Layout from "../layouts/Layout.astro";
         Running low on credits? Click below to purchase more.
       </p>
     </div>
-    <section class="mt-4 w-fit p-6 bg-white shadow-lg border border-gray-200 rounded-lg">
+    <section class="card-item mt-4 w-fit p-6 bg-white shadow-lg border border-gray-200 rounded-lg">
       <div
         class="flex gap-4 mb-6"
       >
@@ -104,7 +104,7 @@ import Layout from "../layouts/Layout.astro";
       </div>
       <a
         href="/payment"
-        class="bg-primary px-6 py-4 text-white rounded-md hover:bg-blue-900 flex"
+        class="btn-hover bg-primary px-6 py-4 text-white rounded-md hover:bg-blue-900 flex"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

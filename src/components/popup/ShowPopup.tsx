@@ -13,7 +13,7 @@ function ShowPopup() {
     }, [])
     return (
         <div>
-            <SuccessPopup title="Payment Successful" show={data} onSubmit={() => console.log(234234)} onCancel={() => console.log(324234)} />
+            <SuccessPopup title="Payment Successful!" show={data} onSubmit={() => console.log(234234)} onCancel={() => console.log(324234)} />
         </div>
     )
 }

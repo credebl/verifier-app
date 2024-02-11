@@ -47,18 +47,12 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* .submit-button:disabled {
-  cursor: not-allowed;
-  background-color: #d1d5db;
-  color: #111827;
-}
-
-.submit-button:disabled:hover {
-  background-color: #9ca3af;
-} */
-
 .credit-card {
   max-width: 420px;
+}
+
+.word-break-words {
+  word-break: break-word !important;
 }
 
 @media only screen and (max-width: 420px) {
@@ -82,16 +76,190 @@
   }
 }
 
+.welcome-card {
+  animation: sectionFromTop 0.4s ease-in-out;
+}
+
+.dashboard-card .card-item:nth-child(1) {
+  opacity: 0;
+  animation: showOpacity 0.4s ease-in-out forwards;
+  animation-delay: 0.4s;
+}
+.dashboard-card .card-item:nth-child(2) {
+  opacity: 0;
+  animation: showOpacity 0.4s ease-in-out forwards;
+  animation-delay: 0.8s;
+}
+.dashboard-card .card-item:nth-child(3) {
+  opacity: 0;
+  animation: showOpacity 0.4s ease-in-out forwards;
+  animation-delay: 1.2s;
+}
+.card-item:nth-child(4) {
+  opacity: 0;
+  animation: showOpacity 0.4s ease-in-out forwards;
+  animation-delay: 1.6s;
+}
+
+.check-item:nth-child(1) .check {
+  opacity: 0;
+  animation: showOpacity 0.4s ease-in-out forwards;
+  animation-delay: 0.4s;
+}
+
+.check-item:nth-child(2) .check {
+  opacity: 0;
+  animation: showOpacity 0.4s ease-in-out forwards;
+  animation-delay: 0.8s;
+}
+.check-item:nth-child(3) .check {
+  opacity: 0;
+  animation: showOpacity 0.4s ease-in-out forwards;
+  animation-delay: 1.2s;
+}
+.check-item:nth-child(4) .check {
+  opacity: 0;
+  animation: showOpacity 0.4s ease-in-out forwards;
+  animation-delay: 1.6s;
+}
+.check-item:nth-child(5) .check {
+  opacity: 0;
+  animation: showOpacity 0.4s ease-in-out forwards;
+  animation-delay: 2s;
+}
+.check-item:nth-child(6) .check {
+  opacity: 0;
+  animation: showOpacity 0.4s ease-in-out forwards;
+  animation-delay: 2.4s;
+}
+
+.verified-stamp {
+  transform: scale(3) translateX(200px);
+  animation: verifyStamp 0.4s ease-in-out forwards;
+  animation-delay: 2.4s;
+}
+
+.price-summary .price-item {
+  opacity: 0;
+  animation: showOpacity 0.5s ease-in-out forwards;
+}
+
+.start-verify {
+  opacity: 0;
+  animation: showOpacity 0.2s ease-in-out forwards;
+  animation-delay: .3s;
+}
+
+.hide-opacity {
+  animation: hideOpacity 0.4s ease-in-out;
+  animation-delay: 2s;
+}
+
 .section-from-right {
-  animation: sectionFromRight1 1s ease-in-out;
-  animation-delay: 0.5s;
+  transition: all 0.4s ease-out;
+  animation: sectionFromRight 0.4s ease-in-out;
+  animation-delay: 0s;
+}
+
+.section-from-left {
+  transition: all 0.4s ease-out;
+  animation: sectionFromLeft 0.4s ease-in-out;
+  animation-delay: 0s;
+}
+
+.section-from-bottom {
+  animation: sectionFromBottom 0.4s ease-in-out;
+}
+
+.section-from-top {
+  animation: sectionFromTop 0.4s ease-in-out;
+}
+
+.btn-hover {
+  transform: scale(1);
+}
+
+.btn-hover:hover {
+  transform: scale(1.1);
+  transition: all 0.2s linear;
+}
+
+@keyframes scaleOnHover {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
+  }
 }
 
 @keyframes sectionFromRight {
   0% {
     transform: translateX(300px);
   }
+  80% {
+    transform: translateX(-20px);
+  }
   100% {
     transform: translateX(0px);
   }
 }
+
+@keyframes sectionFromLeft {
+  0% {
+    transform: translateX(-300px);
+  }
+  80% {
+    transform: translateX(20px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+
+@keyframes sectionFromBottom {
+    0% {
+      transform: translateY(50px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+
+@keyframes sectionFromTop {
+  0% {
+    transform: translateY(-50px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes hideOpacity {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes showOpacity {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+@keyframes verifyStamp {
+  0% {
+    transform: scale(3) translateX(200px);
+  }
+  100% {
+    transform: scale(1) translateX(0px);
+  }
+}
+

@@ -1,6 +1,5 @@
-<div>
   <div
-    class="credit-card w-full sm:w-auto mx-auto rounded-xl bg-white"
+    class="section-from-right credit-card w-full sm:w-auto mx-auto rounded-xl bg-white"
     x-data="creditCard"
   >
     <header class="flex flex-col justify-center items-center">
@@ -172,7 +171,7 @@
     <footer class="p-4">
       <button
         id="paynow"
-        class="submit-button flex justify-center px-4 py-3 rounded-md bg-gradient-to-r from-primary to-secondary text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors disabled:opacity-60"
+        class="btn-hover submit-button flex justify-center px-4 py-3 rounded-md bg-gradient-to-r from-primary to-secondary text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors disabled:opacity-60"
       >
         Pay now
         <div
@@ -200,7 +199,6 @@
       </button>
     </footer>
   </div>
-</div>
 <script defer src="https://unpkg.com/alpinejs@3.2.2/dist/cdn.min.js"></script>
 <script>
   const button = document.getElementById("paynow");

@@ -1,7 +1,7 @@
 function Welcome() {
     return (
         <div
-            className="flex mb-4 flex-col items-center bg-white border border-gray-200 rounded-lg shadow-lg md:flex-row dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 bg-cover bg-[url(/ribbon.svg)] relative overflow-hidden"
+            className="welcome-card flex mb-4 flex-col items-center bg-white border border-gray-200 rounded-lg shadow-lg md:flex-row dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 bg-cover bg-[url(/ribbon.svg)] relative overflow-hidden"
         >
             {/* <div className='bg-overlay w-full h-full absolute'></div> */}
             <div className="w-full min-h-[148px] p-6 z-10 ml-4">

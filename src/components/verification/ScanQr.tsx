@@ -48,8 +48,8 @@ const QrCode = () => {
       default:
         return (
           <div
-            className="flex flex-col justify-center"
-            style={{ minHeight: "calc(100vh - 6rem)" }}
+            className="start-verify flex flex-col justify-center"
+            style={{ minHeight: "calc(100vh - 11rem)" }}
           >
             <div className="flex items-center justify-center">
               <div className="flex flex-col justify-center items-center">
@@ -71,7 +71,7 @@ const QrCode = () => {
               about issuer, recipient of the certificate (student), intactness
               of the certificate (for any alteration or forging) and its
               validity (revoked or not) - all of this instantaneously and at a
-              click of a button! <br/>All this verification is privacy preserving
+              click of a button! <br />All this verification is privacy preserving
               which works only upon the consent from the student. As you proceed
               with verification, it will ask to present the QR code from the
               certificate to get verified instantaneously.
@@ -79,7 +79,7 @@ const QrCode = () => {
             <div className="flex items-center justify-center mt-10 flex-col gap-4">
               <button
                 onClick={() => setShow(true)}
-                className="px-12 py-2 min-w-fit min-h-[43px] sm:min-w-[12rem] rounded-md text-center font-medium leading-5 flex items-center justify-center hover:bg-secondary-700 bg-primary text-sm"
+                className="btn-hover px-12 py-2 min-w-fit min-h-[43px] sm:min-w-[12rem] rounded-md text-center font-medium leading-5 flex items-center justify-center hover:bg-secondary-700 bg-primary text-sm"
               >
                 <span className="text-white">Start Verify</span>
                 <svg

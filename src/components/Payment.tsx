@@ -44,7 +44,7 @@ function PaymentSummary() {
     }, [qty])
 
     return (
-        <div className="credit-card w-full sm:w-auto mx-auto rounded-xl bg-white p-6">
+        <div className="section-from-left credit-card w-full sm:w-auto mx-auto rounded-xl bg-white p-6">
             <div>
                 <h2 className="text-gray-700 mb-4 font-medium text-xl">
                     Purchase Summary
@@ -66,10 +66,10 @@ function PaymentSummary() {
                     <button className="hover:bg-primary hover:text-white px-2 py-1 cursor-pointer rounded-sm" onClick={() => setQty(qty + 1000)}>+1000</button>
                 </div>
             </div>
-            <div className="mt-6">
+            <div className="mt-6 price-summary">
                 {
                     summary.map((item) => (
-                        <div key={item.name} className="flex justify-between text-gray-700 last:text-gray-900 last:text-lg text-md last:font-semibold py-4 border-b border-gray-100 last:border-b-0">
+                        <div key={item.name} className="price-item flex justify-between text-gray-700 last:text-gray-900 last:text-lg text-md last:font-semibold py-4 border-b border-gray-100 last:border-b-0">
                             <div>{item.name}</div>
                             <div>{item.icon}&#8377; {item.value} /-</div>
                         </div>
