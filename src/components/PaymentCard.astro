@@ -21,7 +21,7 @@
         >
           <p
             class="number mb-5 sm:text-xl"
-            x-text="cardNumber !== '' ? cardNumber : '7652 3723 9874 3342'"
+            x-text="cardNumber !== '' ? cardNumber : '765X XXXX XXXX X342'"
           >
           </p>
           <div class="flex flex-row justify-between">
@@ -52,11 +52,11 @@
           <div
             class="border border-white w-16 h-9 flex justify-center items-center"
           >
-            <p x-text="securityCode !== '' ? securityCode : '108'"></p>
+            <p x-text="securityCode !== '' ? securityCode : 'XX8'"></p>
           </div>
         </div>
       </div>
-      <ul class="flex">
+      <ul class="flex items-center">
         <li class="">
           <img
             class="w-auto h-12"
@@ -66,7 +66,7 @@
         </li>
         <li class="ml-5">
           <img
-            class="w-16"
+            class="h-12"
             src="https://www.computop-paygate.com/Templates/imagesaboutYou_desktop/images/computop.png"
             alt=""
           />
@@ -92,7 +92,7 @@
         Card payment
       </h1> -->
       <!-- <div class=""> -->
-        <div x-data="{ cardholder: 'Ram Sharma', cardNumber: '7652 3723 9874 3342', expired: { month: '10', year: '2026' }, securityCode: '108' }">
+        <div x-data="{ cardholder: 'Ram Sharma', cardNumber: '765X XXXX XXXX X342', expired: { month: '10', year: '2026' }, securityCode: 'XX8' }">
 
         <div class="my-3">
           <input
@@ -163,7 +163,7 @@
               x-model="securityCode"
               x-on:focus="card = 'back'"
               x-on:blur="card = 'front'"
-              value="108"
+              value="XX8"
             />
           </div>
         </div>
@@ -250,13 +250,13 @@
       onSubmit() {
         alert(`You did it ${this.cardholder}.`);
       },
-      cardholder: "",
-      cardNumber: "",
+      cardholder: "Ram Sharma",
+      cardNumber: "765X XXXX XXXX X342",
       expired: {
-        month: "",
-        year: "",
+        month: "10",
+        year: "2026",
       },
-      securityCode: "",
+      securityCode: "XX8",
       card: "front",
     }));
   });

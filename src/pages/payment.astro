@@ -2,78 +2,19 @@
 import Layout from "../layouts/Layout.astro";
 import PaymentCard from "../components/PaymentCard.astro";
 import { envConfig } from "../config/envConfig";
-
-const summary = [
-  {
-    name: "Product price",
-    value: 12024,
-    add: true,
-  },
-  {
-    name: "CGST 10%",
-    value: 1202.4,
-    add: true,
-  },
-  {
-    name: "SGST 10%",
-    value: 1202.4,
-    add: true,
-  },
-  {
-    name: "Discount",
-    value: 200,
-    add: false,
-  },
-  {
-    name: "Total Price",
-    value: 14228.8,
-    add: false,
-  },
-];
+import PaymentSummary from "../components/Payment";
 ---
 
 <Layout title={"Payment - " + envConfig.PUBLIC_ORGNAME}>
   <div class="p-6">
-    <div class="divide-x divide-primary grid grid-cols-1 md:grid-cols-2 w-full sm:w-auto shadow-lg mx-auto rounded-xl bg-white p-6">
-        <div>
-          <div
-            class="credit-card w-full sm:w-auto mx-auto rounded-xl bg-white p-6"
-          >
-            <div>
-              <h2 class="text-primary mb-6 font-semibold text-xl">
-                Purchase Summary
-              </h2>
-            </div>
-            <div
-              class="text-lg border-2 border-primary rounded-xl bg-blue-50 font-medium"
-            >
-              <div
-                class="flex text-gray-700 pt-4 pb-4 px-4 border-b border-gray-100 last:border-b-0"
-              >
-                <div class="w-54">Verification Credits</div>
-                <div class="mr-4">:</div>
-                <div>300</div>
-              </div>
-            </div>
-            <div>
-              {
-                summary.map((item) => (
-                  <div class="flex justify-between text-gray-700 last:text-green-700 last:text-lg last:font-semibold px-4 py-4 border-b border-gray-100 last:border-b-0">
-                    <div>{item.name}</div>
-                    <div>&#8377; {item.value} /-</div>
-                  </div>
-                ))
-              }
-            </div>          
-          </div>
-        </div>
-        <div
-          id="payment-option"
-          class="cursor-allowed"
-          >
-          <PaymentCard />
-        </div>
+    <div
+      class="divide-x divide-primary grid grid-cols-1 md:grid-cols-2 w-full sm:w-auto shadow-lg mx-auto rounded-xl bg-white p-6"
+    >
+      <PaymentSummary client:load/>
+      <div id="payment-option" class="cursor-allowed">
+        <PaymentCard />
       </div>
+    </div>
   </div>
 </Layout>
 
