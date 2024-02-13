@@ -39,26 +39,26 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
   useEffect(() => {
     setLoading(true);
 
-    setTimeout(() => {
-      setVerified(true);
-      setData([
-        {
-          [`${Attributes.SL_NO}`]: "SLHF34H234GF24",
-        },
-        {
-          [`${Attributes.STUDENT_NAME}`]: "ytdyyyyyyytttttttttttttttttttttttttttttttttt",
-        },
-        {
-          [`${Attributes.UNIVERSITY_NAME}`]: "Tribhuvan University",
-        },
-        {
-          [`${Attributes.CURRENT_SEMESTER_PERFORMANCE_SGA}`]: "7.36",
-        },
-        {
-          [`${Attributes.CUMMULATIVE_SEMESTER_PERFORMANCE_SGA}`]: "8.34",
-        },
-      ])
-    }, 3000);
+    // setTimeout(() => {
+    //   setVerified(true);
+    //   setData([
+    //     {
+    //       [`${Attributes.SL_NO}`]: "SLHF34H234GF24",
+    //     },
+    //     {
+    //       [`${Attributes.STUDENT_NAME}`]: "ytdyyyyyyytttttttttttttttttttttttttttttttttt",
+    //     },
+    //     {
+    //       [`${Attributes.UNIVERSITY_NAME}`]: "Tribhuvan University",
+    //     },
+    //     {
+    //       [`${Attributes.CURRENT_SEMESTER_PERFORMANCE_SGA}`]: "7.36",
+    //     },
+    //     {
+    //       [`${Attributes.CUMMULATIVE_SEMESTER_PERFORMANCE_SGA}`]: "8.34",
+    //     },
+    //   ])
+    // }, 3000);
 
     if (verifiedData?.length > 0) {
       setData(verifiedData);
