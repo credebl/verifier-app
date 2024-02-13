@@ -102,41 +102,40 @@
 }
 
 .check-item:nth-child(1) .check {
-  opacity: 0;
-  animation: showOpacity 0.4s ease-in-out forwards;
-  animation-delay: 0.4s;
+  transform: translateX(300px);
+  animation: sectionFromRight 0.4s ease-in-out forwards;
 }
 
 .check-item:nth-child(2) .check {
-  opacity: 0;
-  animation: showOpacity 0.4s ease-in-out forwards;
-  animation-delay: 0.8s;
+  transform: translateX(300px);
+  animation: sectionFromRight 0.4s ease-in-out forwards;
+  animation-delay: 0.4s;
 }
 .check-item:nth-child(3) .check {
-  opacity: 0;
-  animation: showOpacity 0.4s ease-in-out forwards;
-  animation-delay: 1.2s;
+  transform: translateX(300px);
+  animation: sectionFromRight 0.4s ease-in-out forwards;
+  animation-delay: 0.8s;
 }
 .check-item:nth-child(4) .check {
-  opacity: 0;
-  animation: showOpacity 0.4s ease-in-out forwards;
-  animation-delay: 1.6s;
+  transform: translateX(300px);
+  animation: sectionFromRight 0.4s ease-in-out forwards;
+  animation-delay: 1.2s;
 }
 .check-item:nth-child(5) .check {
-  opacity: 0;
-  animation: showOpacity 0.4s ease-in-out forwards;
-  animation-delay: 2s;
+  transform: translateX(300px);
+  animation: sectionFromRight 0.4s ease-in-out forwards;
+  animation-delay: 1.6s;
 }
 .check-item:nth-child(6) .check {
-  opacity: 0;
-  animation: showOpacity 0.4s ease-in-out forwards;
-  animation-delay: 2.4s;
+  transform: translateX(300px);
+  animation: sectionFromRight 0.4s ease-in-out forwards;
+  animation-delay: 2s;
 }
 
 .verified-stamp {
   transform: scale(3) translateX(200px);
   animation: verifyStamp 0.4s ease-in-out forwards;
-  animation-delay: 2.4s;
+  animation-delay: 2.8s;
 }
 
 .price-summary .price-item {
@@ -145,9 +144,9 @@
 }
 
 .start-verify {
-  opacity: 0;
+  /* opacity: 0;
   animation: showOpacity 0.2s ease-in-out forwards;
-  animation-delay: .3s;
+  animation-delay: .3s; */
 }
 
 .hide-opacity {

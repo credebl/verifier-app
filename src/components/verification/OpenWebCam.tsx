@@ -260,10 +260,9 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
     }
   }, [])
 
-  console.log(34324, videoRef, cameraAvailable)
   return (
     <div>
-      <div className={`px-12 md:px-24 lg:px-32 sticky top-[60px] z-0 ${!cameraAvailable && 'hidden'}`}>
+      <div className={`px-12 lg:px-24 xl:px-32 sticky top-[60px] z-0 ${!cameraAvailable && 'hidden'}`}>
         <div
           className={`w-full min-h-[400px] flex items-center`}
           style={{ height: "calc(100vh - 13rem)" }}

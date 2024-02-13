@@ -92,13 +92,13 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
           Verify another
         </a>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2">
+      <div className="grid grid-cols-1 lg:grid-cols-2">
         <div className="flex items-center justify-start">
           <div className="block">
             <div className="mt-10 text-3xl font-medium text-gray-700 dark:text-white">
               Verification Progress:
             </div>
-            <div className="flex items-center justify-center my-20">
+            <div className="flex items-center justify-center mt-6 mb-20">
               <ol className="relative text-gray-500 border-s border-gray-200 dark:border-gray-700 dark:text-gray-400">
                 {[1, 2, 3, 4, 5].map((index) => (
                   <li
@@ -108,7 +108,7 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
 
                   >
                     <div
-                      className={`absolute flex items-center justify-center w-10 h-10 rounded-full -start-4 ring-4 ring-white dark:ring-gray-900 -left-[3.25rem] -top-2 ${index <= step ? "bg-green-200" : "bg-gray-100"
+                      className={`absolute flex items-center justify-center w-10 h-10 rounded-full -start-4 ring-4 ring-white dark:ring-gray-900 -left-[53px] -top-2 ${index <= step ? "bg-green-200" : "bg-gray-100"
                         }`}
                     >
                       {index <= step ? (
@@ -153,17 +153,17 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
           <div className="relative p-4 w-full max-h-full">
             <div className="bg-gradient-to-r from-primary to-secondary relative rounded-lg shadow-xl border border-gray-200 dark:bg-gray-700 ">
               {verified && (
-                <div className="verified-stamp flex justify-end mr-14 absolute -top-[83px] -right-[110px]">
+                <div className="verified-stamp flex justify-end mr-14 absolute -top-[65px] -right-[95px]">
                   <img
-                    src="/pngtree-verified-stamp-png-image_9168723.png"
-                    className="w-40 h-40 mt-4"
+                    src="/verified-stamp.svg"
+                    className="w-[6rem] h-[6rem] mt-4"
                   />
                 </div>
               )}
               <div className="p-4 md:p-5 space-y-3">
                 <div className="flex h-full flex-col justify-center gap-0 sm:p-0">
-                  <div className="flex border-b items-center">
-                    <div className="font-semibold flex truncate md:pl-1 sm:mr-8 md:mr-0 text-white dark:bg-gray-800 text-2xl mb-4 mt-0 shrink-0">
+                  <div className="flex items-center">
+                    <div className="font-semibold flex truncate md:pl-1 sm:mr-8 md:mr-0 text-white dark:bg-gray-800 text-2xl mb-2 mt-0 shrink-0">
                       Verified Data
                     </div>
                     <div className='w-full'>
@@ -184,11 +184,11 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
                   </div>
 
                   <table>
-                    <tr className="mb-2 mt-2">
-                      <th className="font-semibold text-xl m-1 p-1 text-start text-white break-words">
+                    <tr className="mb-2 mt-2 border-b ">
+                      <th className="font-semibold text-md m-1 p-1 text-start text-white break-words">
                         Claims
                       </th>
-                      <th className="font-semibold text-xl m-1 p-1 text-start text-white break-words">
+                      <th className="font-semibold text-md m-1 p-1 text-start text-white break-words">
                         Values
                       </th>
                     </tr>
@@ -199,11 +199,11 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
                           key={item.name + i}
                           className="w-full check-item text-white border-b last:border-b-0"
                         >
-                          <td className="m-1 p-1 w-1/2 text-start dark:text-white text-lg break-words shrink-0">
+                          <td className="p-1 w-1/2 text-start font-medium dark:text-white text-sm break-words shrink-0">
                             {/* {item.name} */}
                             {ConvertToTitleCase(item.name)}
                           </td>
-                          <td className="m-1 p-1 flex justify-start dark:text-white text-lg">
+                          <td className="p-1 flex justify-start dark:text-white text-sm">
                             {loading && !item.value ? (
                               <div role="status">
                                 <svg
@@ -224,11 +224,11 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
                                 </svg>
                               </div>
                             ) : (
-                              <div className="flex justify-between items-center w-full">
+                              <div className="check flex justify-between items-center w-full">
                                 <div className="truncate line-clamp-2 max-h-[56px] whitespace-normal word-break-words"  style={{ width: 'calc(100% - 2rem)' }}>{item.value}</div>
-                                <div className="check">
+                                <div className="">
                                   <svg
-                                    className="w-7 h-7 p-1.5 rounded-full text-white bg-green-500"
+                                    className="w-5 h-5 p-1 rounded-full text-white bg-[#4C8900]"
                                     aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"

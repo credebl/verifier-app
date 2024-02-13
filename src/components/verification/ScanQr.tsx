@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import OpenWebCam from "./OpenWebCam";
-import ScannedContentComponent from "./ScannedContent";
+// import ScannedContentComponent from "./ScannedContent";
 import { envConfig } from "../../config/envConfig";
 import ConfirmPopup from "../popup/ConfirmPopup";
 
@@ -115,6 +115,7 @@ const QrCode = () => {
     <div className="py-4 px-8 sticky top-[60px] border-b-slate-50 z-0">
       <div className="flex items-center justify-center">{showComponent()}</div>
       <ConfirmPopup title="Please provide access to open the camera in the browser for scanning QR code from the certificate." show={show} onSubmit={() => handleStartVerification()} onCancel={() => setShow(false)} />
+      {/* <ScannedContentComponent verifiedData={[]} content="" step={5} /> */}
     </div>
   );
 };
