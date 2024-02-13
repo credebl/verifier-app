@@ -1,8 +1,8 @@
 
   export enum Attributes {
-    SL_NO = 'sl_no',
-    STUDENT_NAME = 'student_name',
-    UNIVERSITY_NAME = 'university_name',
-    CURRENT_SEMESTER_PERFORMANCE_SGA = 'current_semester_performance-SGA',
-    CUMMULATIVE_SEMESTER_PERFORMANCE_SGA = 'cummulative_semester_performance-SGA'
+    SL_NO = 'SL No',
+    STUDENT_NAME = 'Student Name',
+    UNIVERSITY_NAME = 'University Name',
+    CURRENT_SEMESTER_PERFORMANCE_SGA = 'Current Semester Performance-SGA',
+    CUMULATIVE_SEMESTER_PERFORMANCE_SGA = 'Cumulative Semester Performance-SGA'
   }

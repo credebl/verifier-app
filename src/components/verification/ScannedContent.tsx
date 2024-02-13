@@ -27,19 +27,19 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
       [`${Attributes.CURRENT_SEMESTER_PERFORMANCE_SGA}`]: "",
     },
     {
-      [`${Attributes.CUMMULATIVE_SEMESTER_PERFORMANCE_SGA}`]: "",
+      [`${Attributes.CUMULATIVE_SEMESTER_PERFORMANCE_SGA}`]: "",
     },
   ];
   const [data, setData] = useState(proofData);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [verified, setVerified] = useState(false);
 
   console.log("verifiedData00", verifiedData);
 
   useEffect(() => {
-    setLoading(true);
-
-    // setTimeout(() => {
+    // if (verifiedData) {
+    //   // setTimeout(() => {
+    //     setLoading(false);
     //   setVerified(true);
     //   setData([
     //     {
@@ -55,16 +55,24 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
     //       [`${Attributes.CURRENT_SEMESTER_PERFORMANCE_SGA}`]: "7.36",
     //     },
     //     {
-    //       [`${Attributes.CUMMULATIVE_SEMESTER_PERFORMANCE_SGA}`]: "8.34",
+    //       [`${Attributes.CUMULATIVE_SEMESTER_PERFORMANCE_SGA}`]: "8.34",
     //     },
     //   ])
-    // }, 3000);
+    //   // }, 3000);
+    // }
 
     if (verifiedData?.length > 0) {
       setData(verifiedData);
+      setLoading(false);
       setVerified(true);
     }
   }, [verifiedData]);
+
+  // useEffect(() => {
+  //   if (step step > 3) {
+  //     setLoading(true);
+  //   }
+  // }, [step])
 
   const proofDetailsData =
     data?.length > 0 &&
@@ -108,8 +116,8 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
 
                   >
                     <div
-                      className={`absolute flex items-center justify-center w-10 h-10 rounded-full -start-4 ring-4 ring-white dark:ring-gray-900 -left-[53px] -top-2 ${index <= step ? "bg-green-200" : "bg-gray-100"
-                        }`}
+                      className={`absolute flex items-center justify-center w-10 h-10 rounded-full -start-4 ring-4 ring-white dark:ring-gray-900 -!left-[53px] -top-2 ${index <= step ? "bg-green-200" : "bg-gray-100"
+                        }`} style={{ left: '-53px' }}
                     >
                       {index <= step ? (
                         <svg
@@ -204,7 +212,7 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
                             {ConvertToTitleCase(item.name)}
                           </td>
                           <td className="p-1 flex justify-start dark:text-white text-sm">
-                            {loading && !item.value ? (
+                            {loading ? (
                               <div role="status">
                                 <svg
                                   aria-hidden="true"
@@ -223,28 +231,34 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
                                   />
                                 </svg>
                               </div>
-                            ) : (
-                              <div className="check flex justify-between items-center w-full">
-                                <div className="truncate line-clamp-2 max-h-[56px] whitespace-normal word-break-words"  style={{ width: 'calc(100% - 2rem)' }}>{item.value}</div>
-                                <div className="">
-                                  <svg
-                                    className="w-5 h-5 p-1 rounded-full text-white bg-[#4C8900]"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 16 12"
-                                  >
-                                    <path
-                                      stroke="currentColor"
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth="2"
-                                      d="M1 5.917 5.724 10.5 15 1.5"
-                                    />
-                                  </svg>
+                            ) :
+                              !item.value ?
+                                (
+                                  <div className="flex justify-between items-center w-full">
+                                    <div className="truncate line-clamp-2 max-h-[56px] whitespace-normal word-break-words" style={{ width: 'calc(100% - 2rem)' }}>-</div>
+                                  </div>
+                                )
+                                : <div className="check flex justify-between items-center w-full">
+                                  <div className="truncate line-clamp-2 max-h-[56px] whitespace-normal word-break-words" style={{ width: 'calc(100% - 2rem)' }}>{item.value}</div>
+                                  <div className="">
+                                    <svg
+                                      className="w-5 h-5 p-1 rounded-full text-white bg-[#4C8900]"
+                                      aria-hidden="true"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      fill="none"
+                                      viewBox="0 0 16 12"
+                                    >
+                                      <path
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M1 5.917 5.724 10.5 15 1.5"
+                                      />
+                                    </svg>
+                                  </div>
                                 </div>
-                              </div>
-                            )}
+                            }
                           </td>
                         </tr>
                       )

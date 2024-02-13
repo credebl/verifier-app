@@ -70,11 +70,8 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
               clearInterval(checkConnectionInterval);
               handleStepChange(2);
               setStep(2);
-              const credDefId =
-                "QqM7efrzUCbeMXk7Wce8Wz:3:CL:279534:MTech Grade Card";
-              const schemaId =
-                "QqM7efrzUCbeMXk7Wce8Wz:2:Tribhuvan University Grade Card:1.1.1";
-
+              const credDefId = envConfig.PUBLIC_CREDDEF_ID;
+              const schemaId = envConfig.PUBLIC_SCHEMA_ID;
               const payload = {
                 connectionId: connectionId,
                 attributes: [
@@ -99,7 +96,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
                     schemaId: schemaId,
                   },
                   {
-                    attributeName: Attributes.CUMMULATIVE_SEMESTER_PERFORMANCE_SGA,
+                    attributeName: Attributes.CUMULATIVE_SEMESTER_PERFORMANCE_SGA,
                     credDefId: credDefId,
                     schemaId: schemaId,
                   },
