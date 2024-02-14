@@ -52,7 +52,6 @@ export const loginUser = async () => {
     const payload: UserSignInData = {
         email: envConfig.PUBLIC_EMAIL,
         isPasskey: false,
-        // password: 'U2FsdGVkX18Y7bdtrjA444InlqFbMTownPCloGszjy0='
         password: passwordEncryption(envConfig.PUBLIC_PASSWORD)
     }
     try {
@@ -62,6 +61,7 @@ export const loginUser = async () => {
             payload
         });
         console.log(34534512, response)
+        setToLocal('session', response?.data?.access_token);
         return response?.data?.access_token;
     }
     catch (error) {
