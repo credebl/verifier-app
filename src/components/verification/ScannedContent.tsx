@@ -68,11 +68,11 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
     }
   }, [verifiedData]);
 
-  // useEffect(() => {
-  //   if (step step > 3) {
-  //     setLoading(true);
-  //   }
-  // }, [step])
+  useEffect(() => {
+    if (step > 3) {
+      setLoading(true);
+    }
+  }, [step])
 
   const proofDetailsData =
     data?.length > 0 &&

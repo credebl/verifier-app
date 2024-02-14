@@ -5,10 +5,11 @@ import { getSupabaseClient, loginUser } from "../api/auth";
 import { envConfig } from "../config/envConfig";
 import { apiRoutes } from "../config/apiRoutes";
 
-let token = Astro.cookies.get("session")?.value;
-
+let token = await Astro.cookies.get("session")?.value;
+console.log(234234, token)
 const login = async () => {
   const res = await loginUser();
+  console.log(3453457, res)
   await Astro.cookies.set("session", res);
 };
 
@@ -40,6 +41,7 @@ try {
 	}
 
 token = Astro.cookies.get("session")?.value;
+console.log(23423411, token);
 ---
 
 <Layout title={"Verify - " + envConfig.PUBLIC_ORGNAME}>

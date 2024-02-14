@@ -75,10 +75,11 @@ const limit = 5;
 let count = 0
 export const reCallAPI = async (error: any, api: any, params: any = []) => {
     try {
-        console.log(35345345, params);
-        if (error.statusCode === 401 && count <= limit) {
+        console.log(35345345, error, params);
+        if ((error.message === "Unauthorized" || error.statusCode === 401) && count <= limit) {
             const token = await loginUser()
             count++;
+            console.log(32423488, count)
             return await api(token, ...params)
         } else {
             console.error("Recall not required ERROR:::", error)
@@ -87,5 +88,26 @@ export const reCallAPI = async (error: any, api: any, params: any = []) => {
     } catch (err) {
         console.log("RECALL ERROR:::", err)
         throw err
+    }
+}
+
+export const setToLocal = (key: string, value: string) => {
+    try {
+        if(localStorage && key && value && typeof window !== 'undefined'){
+            localStorage?.setItem(key, value)
+        }
+    } catch (err){
+        console.log(err)
+    }
+}
+
+export const getFromLocal = (key: string) => {
+    try {
+        if(localStorage && key && typeof window !== 'undefined'){
+            return localStorage?.getItem(key)
+        }
+    } catch (err){
+        console.log(err)
+        return false
     }
 }

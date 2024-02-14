@@ -17,6 +17,7 @@ import type { AxiosResponse } from "axios";
 import { apiStatusCodes } from "../../config/commonConstants";
 import { envConfig } from "../../config/envConfig";
 import { Attributes } from "../../../common/common.constants";
+import { getFromLocal } from "../../api/auth";
 interface IOpenWebCamProps {
   onCloseWebCam: () => void;
   onScan: (result: string) => void;
@@ -58,10 +59,11 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
 
   const getConnectionDetails = async (connectionId: string) => {
     try {
+      const token = getFromLocal("session") || '';
       const orgId = await envConfig.PUBLIC_ORGID;
       if (!connectionStatus) {
         const checkConnectionInterval = setInterval(async () => {
-          const response = await getConnection(connectionId, orgId);
+          const response = await getConnection(token, connectionId, orgId);
           const { data } = response as AxiosResponse;
           if (data?.statusCode === apiStatusCodes?.API_STATUS_SUCCESS) {
             const status = data?.data?.state;
@@ -115,10 +117,11 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
 
   const getProofDetails = async (proofId: string) => {
     try {
+      const token = getFromLocal('session') || '';
       const orgId = await envConfig.PUBLIC_ORGID;
 
       const proofResponse = setInterval(async () => {
-        const response = await getProofData(proofId, orgId);
+        const response = await getProofData(token, proofId, orgId);
         const { data } = response as AxiosResponse;
         if (data?.statusCode === apiStatusCodes?.API_STATUS_SUCCESS) {
           const status = data?.data?.state;
@@ -139,9 +142,10 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   const acceptInvitation = async (qrData: any) => {
     try {
       const orgId = envConfig.PUBLIC_ORGID;
+      const token = getFromLocal("session") || '';
       const payloadData = qrData;
       if (orgId && payloadData) {
-        const response = await receiveInvitationUrl(orgId, payloadData);
+        const response = await receiveInvitationUrl(token, orgId, payloadData);
         const { data } = response as AxiosResponse;
 
         if (data?.statusCode === apiStatusCodes?.API_STATUS_CREATED) {
@@ -159,8 +163,9 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
 
   const createProofRequest = async (payload: any) => {
     try {
+      const token = getFromLocal('session') || '';
       if (payload?.attributes?.length > 0) {
-        const response = await sendProofRequest(payload);
+        const response = await sendProofRequest(token, payload);
         const { data } = response as AxiosResponse;
 
         if (data?.statusCode === apiStatusCodes.API_STATUS_CREATED) {
@@ -178,7 +183,8 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   };
 
   const fetchPresentationResult = async (orgId: string, proofId: string) => {
-    const response = await fetchPresentationData(proofId, orgId);
+    const token = getFromLocal("session") || '';
+    const response = await fetchPresentationData(token, proofId, orgId);
     const { data } = response as AxiosResponse;
     showVerifiedDetails(data?.data);
 
@@ -188,7 +194,8 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   const verifyProofPresentation = async (proofId: string) => {
     try {
       const orgId = envConfig.PUBLIC_ORGID;
-      const response = await verifyPresentation(proofId, orgId);
+      const token = getFromLocal('session') || '';
+      const response = await verifyPresentation(token, proofId, orgId);
       const { data } = response as AxiosResponse;
       if (data?.data?.state === "done") {
         handleStepChange(5);

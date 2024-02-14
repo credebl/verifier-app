@@ -2,6 +2,7 @@ import { apiRoutes } from "../../config/apiRoutes";
 import { envConfig } from "../../config/envConfig";
 import CryptoJS from "crypto-js"
 import { axiosGet, axiosPost } from "../../services/apiRequests";
+import { reCallAPI } from "../../api/auth";
 
 export const decryptData = (value: any): string => {
     const CRYPTO_PRIVATE_KEY: string = `${envConfig.PUBLIC_CRYPTO_PRIVATE_KEY}`
@@ -16,8 +17,7 @@ export const getFromLocalStorage = async (key: string) =>{
     return convertedValue
 }
 
-export const sendProofRequest = async (payload: any) => {
-	const token = localStorage.getItem('session');
+export const sendProofRequest = async (token: string, payload: any) => {
 	const orgId = await envConfig.PUBLIC_ORGID;
 	const url = `${apiRoutes.org}/${orgId}${apiRoutes.verification.sendProofRequest}`;
 	const axiosPayload = {
@@ -35,12 +35,11 @@ export const sendProofRequest = async (payload: any) => {
 		return await axiosPost(axiosPayload);
 	} catch (error) {
 		const err = error as Error;
-		return err?.message;
+		return reCallAPI(err, sendProofRequest, [payload])
 	}
 };
 
-export const getProofData = async (proofId: string, orgId: string) => {
-	const token = localStorage.getItem('session');
+export const getProofData = async (token: string, proofId: string, orgId: string) => {
 	const url = `${apiRoutes.org}/${orgId}${apiRoutes.verification.sendProofRequest}/${proofId}`;
 	const axiosPayload = {
 	  url,
@@ -56,12 +55,11 @@ export const getProofData = async (proofId: string, orgId: string) => {
 	  return await axiosGet(axiosPayload);
 	} catch (error) {
 	  const err = error as Error;
-	  return err?.message;
+	  return reCallAPI(err, getProofData, [proofId, orgId])
 	}
   };
 
-  export const verifyPresentation = async (proofId: string, orgId: string) => {
-	const token = localStorage.getItem('session');
+  export const verifyPresentation = async (token: string, proofId: string, orgId: string) => {
 	const url = `${apiRoutes.org}/${orgId}${apiRoutes.verification.sendProofRequest}/${proofId}${apiRoutes.verification.verifyProof}`;
 	const axiosPayload = {
 	  url,
@@ -77,12 +75,11 @@ export const getProofData = async (proofId: string, orgId: string) => {
 	  return await axiosPost(axiosPayload);
 	} catch (error) {
 	  const err = error as Error;
-	  return err?.message;
+	  return reCallAPI(err, verifyPresentation, [proofId, orgId])
 	}
   };
 
-  export const fetchPresentationData = async (proofId: string, orgId: string) => {
-	const token = localStorage.getItem('session');
+  export const fetchPresentationData = async (token: string, proofId: string, orgId: string) => {
 	const url = `${apiRoutes.org}/${orgId}${apiRoutes.verification.getProofDetails}${proofId}`;
 	const axiosPayload = {
 	  url,
@@ -98,7 +95,7 @@ export const getProofData = async (proofId: string, orgId: string) => {
 	  return await axiosGet(axiosPayload);
 	} catch (error) {
 	  const err = error as Error;
-	  return err?.message;
+	  return reCallAPI(err, fetchPresentationData, [proofId, orgId])
 	}
   };
 

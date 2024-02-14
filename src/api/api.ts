@@ -30,7 +30,6 @@ const API = async ({ token, url, method, payload, headerData = {} }: IProps) => 
 		const res = await fetch(apiURL, {
 			...config,
 		});
-		console.log(34234, res);
 		const response = (await res.json()) || {};
 		if (res.ok) {
 			return response;

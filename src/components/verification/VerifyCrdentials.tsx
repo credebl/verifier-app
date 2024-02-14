@@ -9,6 +9,7 @@ interface IProps {
 
 const VerifyCredentials = ({ token }: IProps) => {
   useEffect(() => {
+    console.log(34544, token);
     localStorage.setItem('session', token)
   }, [])
   return (
