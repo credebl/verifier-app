@@ -23,5 +23,6 @@ export const apiRoutes = {
         getConnection: '/connections',
         getShorteningUrl: '/invitation',
         getInvitationUrl: '/receive-invitation-url'
-    }
+    },
+    userProfile: '/users/profile'
 }

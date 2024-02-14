@@ -3,6 +3,7 @@ import VerifyCredentials from "../components/verification/VerifyCrdentials";
 import Layout from "../layouts/Layout.astro";
 import { getSupabaseClient, loginUser } from "../api/auth";
 import { envConfig } from "../config/envConfig";
+import { apiRoutes } from "../config/apiRoutes";
 
 let token = Astro.cookies.get("session")?.value;
 
@@ -11,17 +12,32 @@ const login = async () => {
   await Astro.cookies.set("session", res);
 };
 
-if (token) {
-  const {
-    data: { user },
-    error,
-  } = await getSupabaseClient().auth.getUser(token);
-  if (!user) {
-    await login();
-  }
-} else {
-  await login();
-}
+try {
+		const baseURL =
+			envConfig.PUBLIC_BASE_URL ||
+			process.env.PUBLIC_BASE_URL;
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+			method: 'GET',
+		};
+		const res = await fetch(`${baseURL + apiRoutes.userProfile}`, {
+			...config,
+		});
+		const userData = await res.json();
+		console.log('Check Authorized User:::', {
+			status: userData.statusCode,
+			message: userData.message,
+		});
+
+		if (userData?.statusCode === 401) {
+			await login();
+		}
+	} catch (error) {
+		console.log('GET USER DETAILS ERROR::::', error);
+	}
 
 token = Astro.cookies.get("session")?.value;
 ---
