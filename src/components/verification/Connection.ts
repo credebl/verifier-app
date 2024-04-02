@@ -1,8 +1,9 @@
+import axios from "axios";
 import { reCallAPI } from "../../api/auth";
 import { apiRoutes } from "../../config/apiRoutes";
 import { axiosGet, axiosPost } from "../../services/apiRequests";
 
-export const getConnection = async (token:string, connectionId: string, orgId: string) => {
+export const getConnection = async (token: string, connectionId: string, orgId: string) => {
   const url = `${apiRoutes.org}/${orgId}${apiRoutes.connection.getConnection}/${connectionId}`;
   const axiosPayload = {
     url,
@@ -22,18 +23,27 @@ export const getConnection = async (token:string, connectionId: string, orgId: s
   }
 };
 
+export const fetchRequestDetails = async (payload: string) => {
+  try {
+    return await axios.get(payload);
+  } catch (error) {
+    const err = error as Error;
+    return err?.message;
+  }
+}
+
 export const getShorteningUrl = async (referenceId: string) => {
-	const token = localStorage.getItem('session');
-	const url = `${apiRoutes.connection.getShorteningUrl}/${referenceId}`;
-	const axiosPayload = {
-		url,
-		config: {
-			headers: {
-			  "Content-Type": "application/json",
-			  Authorization: `Bearer ${token}`,
-			},
-		  },	
-		};
+  const token = localStorage.getItem('session');
+  const url = `${apiRoutes.connection.getShorteningUrl}/${referenceId}`;
+  const axiosPayload = {
+    url,
+    config: {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  };
 
 	try {
 		return await axiosGet(axiosPayload);
@@ -52,7 +62,7 @@ export const receiveInvitationUrl = async (token: string, orgId: string, payload
     config: {
       headers: {
         "Content-Type": "application/json",
-			  Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     },
   };

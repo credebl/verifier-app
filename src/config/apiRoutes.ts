@@ -24,5 +24,8 @@ export const apiRoutes = {
         getShorteningUrl: '/invitation',
         getInvitationUrl: '/receive-invitation-url'
     },
-    userProfile: '/users/profile'
+    userProfile: '/users/profile',
+
+    sendProofRequestUrl:
+      '/orgs/#/proofs/oob?requestType=indy',
 }

@@ -49,11 +49,13 @@ export const passwordEncryption = (password: string): string => {
 
 
 export const loginUser = async () => {
+    console.log("-----",envConfig.PUBLIC_PASSWORD)
     const payload: UserSignInData = {
         email: envConfig.PUBLIC_EMAIL,
         isPasskey: false,
-        password: passwordEncryption(envConfig.PUBLIC_PASSWORD)
+        password: await passwordEncryption(envConfig.PUBLIC_PASSWORD)
     }
+    console.log('payload',payload)
     try {
         const response = await API({
             url: `${apiRoutes.sinIn}`,

@@ -9,6 +9,7 @@ import {
   verifyPresentation,
 } from "./Verification";
 import {
+  fetchRequestDetails,
   getConnection,
   getShorteningUrl,
   receiveInvitationUrl,
@@ -18,6 +19,8 @@ import { apiStatusCodes } from "../../config/commonConstants";
 import { envConfig } from "../../config/envConfig";
 import { Attributes } from "../../../common/common.constants";
 import { getFromLocal } from "../../api/auth";
+import { apiRoutes } from "../../config/apiRoutes";
+import { axiosPost } from "../../services/apiRequests";
 interface IOpenWebCamProps {
   onCloseWebCam: () => void;
   onScan: (result: string) => void;
@@ -30,7 +33,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   onCloseWebCam,
   onScan,
   handleStepChange,
-  showVerifiedDetails
+  showVerifiedDetails,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const scannerRef = useRef<QrScanner | null>(null);
@@ -43,13 +46,135 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
     try {
       handleStepChange(1);
       setStep(1);
-      const invitationData = payload && payload?.split("/")[5];
-      if (invitationData) {
-        const response: any = await getShorteningUrl(invitationData);
-        const { data } = response;
-        await acceptInvitation(data?.data?.invitationPayload);
+      console.log("payload", payload);
+      // const invitationData = payload && payload?.split("/")[4];
+      // console.log("----", payload?.split("/"));
+      // console.log("invitationData", invitationData);
+      // await acceptInvitation(data?.data?.invitationPayload);
+      const orgId = await envConfig.PUBLIC_ORGID;
+      if (payload) {
+        if (payload.includes("/c_v")) {
+          const encryptedData = payload.split("?");
+          console.log("encryptedData", encryptedData);
+          const decryptedData = JSON.parse(atob(encryptedData[1]));
+          console.log("decryptedData", decryptedData);
+          let userEmailId = "";
+          const emailAttribute = decryptedData?.attributes.find(
+            (element: any) => element.name === "email"
+          );
+          if (emailAttribute) {
+            userEmailId = emailAttribute.value;
+          }
+          const proofRequestDetails = {
+            schemaId: decryptedData.schemaId,
+            attributes: decryptedData.attributes,
+            orgId,
+            emailId: userEmailId,
+          };
+          console.log("proofRequestDetails", proofRequestDetails);
+          const sendProofRequestResponse = await sendProofRequestOnEmail(
+            proofRequestDetails
+          );
+          console.log("sendProofRequestResponse", sendProofRequestResponse);
+        } else {
+          const response: any = await fetchRequestDetails(payload);
+          const { data } = response;
+          console.log("after scaned QR", data);
+          console.log("orgId", orgId);
+          const { credDefId, attributes, email } = data?.data;
+          const proofRequestDetails = {
+            credDefId,
+            attributes,
+            orgId,
+            emailId: email,
+          };
+          console.log("proofRequestDetails", proofRequestDetails);
+          const sendProofRequestResponse = await sendProofRequestOnEmail(
+            proofRequestDetails
+          );
+          console.log("sendProofRequestResponse", sendProofRequestResponse);
+          // await acceptInvitation(data?.data?.invitationPayload);
+        }
       }
-    } catch (err) { }
+    } catch (err) {
+      console.error(`Error in send proof request:${err}`);
+    }
+  };
+
+  const sendProofRequestOnEmail = async (payload: any): Promise<any> => {
+    try {
+      const apiUrl = apiRoutes.sendProofRequestUrl.replace("#", payload.orgId);
+      console.log("api url", apiUrl);
+      const token = localStorage.getItem("session");
+      console.log("token", token);
+      const requestedAttributes: any = {};
+      payload.attributes.forEach((element: any) => {
+        if (element.name !== "Course Details") {
+          const temp: any = {};
+          if (payload.credDefId) {
+            temp["restrictions"] = [
+              {
+                cred_def_id: payload.credDefId,
+              },
+            ];
+          }
+          if (payload.schemaId) {
+            temp["restrictions"] = [
+              {
+                schema_id: payload.schemaId,
+              },
+            ];
+          }
+          // const temp: any = {
+          //   restrictions: [
+          //     {
+          //       cred_def_id: payload.credDefId,
+          //     },
+          //   ],
+          // };
+          temp["name"] = element.name;
+          console.log("temp", temp);
+          requestedAttributes[element.name] = temp;
+        }
+      });
+      console.log("requestedAttributes", requestedAttributes);
+      const data = {
+        proofFormats: {
+          indy: {
+            name: "proof-request",
+            version: "1.0",
+            requested_attributes: requestedAttributes,
+            requested_predicates: {},
+          },
+        },
+        comment: "Proof request",
+        protocolVersion: "v1",
+        autoAcceptProof: "always",
+        isShortenUrl: true,
+        emailId: [payload.emailId],
+      };
+      console.log("data", JSON.stringify(data));
+      const axiosPayload = {
+        url: apiUrl,
+        payload: data,
+        config: {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      };
+      const resp = await axiosPost(axiosPayload);
+      // const resp = await lastValueFrom(
+      //   this.httpService
+      //     .post(apiUrl, data, config)
+      //     .pipe(map((response) => response))
+      // );
+      return "resp";
+    } catch (error) {
+      console.error("Error in send oob proof request on email", error);
+      throw error;
+    }
   };
 
   const handleQrCodeScanned = async (result: any) => {
@@ -59,7 +184,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
 
   const getConnectionDetails = async (connectionId: string) => {
     try {
-      const token = getFromLocal("session") || '';
+      const token = getFromLocal("session") || "";
       const orgId = await envConfig.PUBLIC_ORGID;
       if (!connectionStatus) {
         const checkConnectionInterval = setInterval(async () => {
@@ -98,7 +223,8 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
                     schemaId: schemaId,
                   },
                   {
-                    attributeName: Attributes.CUMULATIVE_SEMESTER_PERFORMANCE_SGA,
+                    attributeName:
+                      Attributes.CUMULATIVE_SEMESTER_PERFORMANCE_SGA,
                     credDefId: credDefId,
                     schemaId: schemaId,
                   },
@@ -117,7 +243,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
 
   const getProofDetails = async (proofId: string) => {
     try {
-      const token = getFromLocal('session') || '';
+      const token = getFromLocal("session") || "";
       const orgId = await envConfig.PUBLIC_ORGID;
 
       const proofResponse = setInterval(async () => {
@@ -142,12 +268,12 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   const acceptInvitation = async (qrData: any) => {
     try {
       const orgId = envConfig.PUBLIC_ORGID;
-      const token = getFromLocal("session") || '';
+      const token = getFromLocal("session") || "";
       const payloadData = qrData;
       if (orgId && payloadData) {
         const response = await receiveInvitationUrl(token, orgId, payloadData);
         const { data } = response as AxiosResponse;
-
+        console.log("data", data);
         if (data?.statusCode === apiStatusCodes?.API_STATUS_CREATED) {
           const connectionId = data?.data?.connectionRecord?.id;
 
@@ -163,7 +289,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
 
   const createProofRequest = async (payload: any) => {
     try {
-      const token = getFromLocal('session') || '';
+      const token = getFromLocal("session") || "";
       if (payload?.attributes?.length > 0) {
         const response = await sendProofRequest(token, payload);
         const { data } = response as AxiosResponse;
@@ -183,7 +309,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   };
 
   const fetchPresentationResult = async (orgId: string, proofId: string) => {
-    const token = getFromLocal("session") || '';
+    const token = getFromLocal("session") || "";
     const response = await fetchPresentationData(token, proofId, orgId);
     const { data } = response as AxiosResponse;
     showVerifiedDetails(data?.data);
@@ -194,7 +320,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   const verifyProofPresentation = async (proofId: string) => {
     try {
       const orgId = envConfig.PUBLIC_ORGID;
-      const token = getFromLocal('session') || '';
+      const token = getFromLocal("session") || "";
       const response = await verifyPresentation(token, proofId, orgId);
       const { data } = response as AxiosResponse;
       if (data?.data?.state === "done") {
@@ -203,7 +329,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
         fetchPresentationResult(orgId, proofId);
         console.log("presentation proof verified successfully");
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const startScanning = () => {
@@ -221,8 +347,8 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
     }
 
     if (videoRef.current === null) {
-      console.log('No camera found');
-      alert('No camera found');
+      console.log("No camera found");
+      alert("No camera found");
     }
   };
 
@@ -242,31 +368,35 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
     };
   }, [step]);
 
-
   useEffect(() => {
     if (navigator?.mediaDevices?.getUserMedia) {
-      navigator?.mediaDevices?.getUserMedia({ video: true })
+      navigator?.mediaDevices
+        ?.getUserMedia({ video: true })
         .then(function (stream) {
-          setLoading(false)
-          console.log('Camera access granted!');
-          setCameraAvailable(true)
+          setLoading(false);
+          console.log("Camera access granted!");
+          setCameraAvailable(true);
         })
         .catch(function (error) {
-          setLoading(false)
-          console.log('Camera access denied or error:', error);
-          setCameraAvailable(false)
+          setLoading(false);
+          console.log("Camera access denied or error:", error);
+          setCameraAvailable(false);
         });
     } else {
-      setLoading(false)
-      console.log('getUserMedia is not supported in this browser.');
+      setLoading(false);
+      console.log("getUserMedia is not supported in this browser.");
       // Do something if getUserMedia is not supported
-      setCameraAvailable(false)
+      setCameraAvailable(false);
     }
-  }, [])
+  }, []);
 
   return (
     <div>
-      <div className={`px-12 lg:px-24 xl:px-32 sticky top-[60px] z-0 ${!cameraAvailable && 'hidden'}`}>
+      <div
+        className={`px-12 lg:px-24 xl:px-32 sticky top-[60px] z-0 ${
+          !cameraAvailable && "hidden"
+        }`}
+      >
         <div
           className={`w-full min-h-[400px] flex items-center`}
           style={{ height: "calc(100vh - 13rem)" }}
@@ -283,7 +413,8 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
         </div>
 
         <div className="text-center">
-          Scan the QR code from the certificate on the camera to get it verified.
+          Scan the QR code from the certificate on the camera to get it
+          verified.
         </div>
         <div className="flex items-center justify-center">
           <button
@@ -294,13 +425,20 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
           </button>
         </div>
       </div>
-      <div style={{ height: "calc(100vh - 13rem)" }} className="flex items-center justify-center">
-        <div className={`${cameraAvailable ? "hidden" : "block"}  bg-red-100 text-sm text-red-500 border border-red-300 rounded-md p-4`}>
-          Please grant permission to access your camera or ensure your webcam is connected.
+      <div
+        style={{ height: "calc(100vh - 13rem)" }}
+        className="flex items-center justify-center"
+      >
+        <div
+          className={`${
+            cameraAvailable ? "hidden" : "block"
+          }  bg-red-100 text-sm text-red-500 border border-red-300 rounded-md p-4`}
+        >
+          Please grant permission to access your camera or ensure your webcam is
+          connected.
         </div>
       </div>
     </div>
-
   );
 };
 
