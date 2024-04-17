@@ -102,32 +102,32 @@
 }
 
 .check-item:nth-child(1) .check {
-  transform: translateX(300px);
+  transform: translateX(600px);
   animation: sectionFromRight 0.4s ease-in-out forwards;
 }
 
 .check-item:nth-child(2) .check {
-  transform: translateX(300px);
+  transform: translateX(600px);
   animation: sectionFromRight 0.4s ease-in-out forwards;
   animation-delay: 0.4s;
 }
 .check-item:nth-child(3) .check {
-  transform: translateX(300px);
+  transform: translateX(600px);
   animation: sectionFromRight 0.4s ease-in-out forwards;
   animation-delay: 0.8s;
 }
 .check-item:nth-child(4) .check {
-  transform: translateX(300px);
+  transform: translateX(600px);
   animation: sectionFromRight 0.4s ease-in-out forwards;
   animation-delay: 1.2s;
 }
 .check-item:nth-child(5) .check {
-  transform: translateX(300px);
+  transform: translateX(600px);
   animation: sectionFromRight 0.4s ease-in-out forwards;
   animation-delay: 1.6s;
 }
 .check-item:nth-child(6) .check {
-  transform: translateX(300px);
+  transform: translateX(600px);
   animation: sectionFromRight 0.4s ease-in-out forwards;
   animation-delay: 2s;
 }
@@ -194,7 +194,7 @@
 
 @keyframes sectionFromRight {
   0% {
-    transform: translateX(300px);
+    transform: translateX(600px);
   }
   80% {
     transform: translateX(-20px);
@@ -206,7 +206,7 @@
 
 @keyframes sectionFromLeft {
   0% {
-    transform: translateX(-300px);
+    transform: translateX(-600px);
   }
   80% {
     transform: translateX(20px);

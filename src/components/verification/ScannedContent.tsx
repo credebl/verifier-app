@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Attributes } from "../../../common/common.constants";
 import { ConvertToTitleCase } from "../../config/ConvertToTitleCase";
+import { envConfig } from "../../config/envConfig";
 
 interface ScannedContentComponentProps {
   verifiedData: any;
@@ -157,7 +158,7 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
             </div>
           </div>
         </div>
-        <div className="py-12 flex w-full">
+        <div className="py-12 flex flex-col w-full">
           <div className="relative p-4 w-full max-h-full">
             <div className="bg-gradient-to-r from-primary to-secondary relative rounded-lg shadow-xl border border-gray-200 dark:bg-gray-700 ">
               {verified && (
@@ -277,6 +278,13 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
                 </div> */}
             </div>
           </div>
+          {
+            verifiedData && verifiedData?.length > 0 &&
+            <div className="relative px-4 py-0 w-full max-h-full">
+              <h3 className="my-2 flex"><span className='font-semibold mr-2 whitespace-nowrap'>Issuer Name:</span><span className='w-full truncate'>{envConfig.PUBLIC_ISSUER_NAME}</span></h3>
+              <h3 className="my-2 flex"><span className='font-semibold mr-2 whitespace-nowrap'>Issuer DID:</span><span className='w-full truncate'>{envConfig.PUBLIC_ISSUER_DID}</span></h3>
+            </div>
+          }
         </div>
       </div>
     </div>
