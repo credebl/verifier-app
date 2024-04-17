@@ -278,9 +278,13 @@ const ScannedContentComponent: React.FC<ScannedContentComponentProps> = ({
                 </div> */}
             </div>
           </div>
-          <div className="relative px-4 py-0 w-full max-h-full">
-            <h3 className="my-2 flex"><span className='font-semibold mr-2 whitespace-nowrap'>Issuer DID:</span><span className='w-full truncate'>{envConfig.PUBLIC_ISSUER_DID}</span></h3>
-          </div>
+          {
+            verifiedData && verifiedData?.length > 0 &&
+            <div className="relative px-4 py-0 w-full max-h-full">
+              <h3 className="my-2 flex"><span className='font-semibold mr-2 whitespace-nowrap'>Issuer Name:</span><span className='w-full truncate'>{envConfig.PUBLIC_ISSUER_NAME}</span></h3>
+              <h3 className="my-2 flex"><span className='font-semibold mr-2 whitespace-nowrap'>Issuer DID:</span><span className='w-full truncate'>{envConfig.PUBLIC_ISSUER_DID}</span></h3>
+            </div>
+          }
         </div>
       </div>
     </div>
