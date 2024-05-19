@@ -96,33 +96,37 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
               const schemaId = envConfig.PUBLIC_SCHEMA_ID;
               const payload = {
                 connectionId: connectionId,
-                attributes: [
-                  {
-                    attributeName: Attributes.SL_NO,
-                    credDefId: credDefId,
-                    schemaId: schemaId,
+                proofFormats: {
+                  indy: {
+                    attributes: [
+                      {
+                        attributeName: Attributes.SL_NO,
+                        credDefId: credDefId,
+                        schemaId: schemaId,
+                      },
+                      {
+                        attributeName: Attributes.STUDENT_NAME,
+                        credDefId: credDefId,
+                        schemaId: schemaId,
+                      },
+                      {
+                        attributeName: Attributes.UNIVERSITY_NAME,
+                        credDefId: credDefId,
+                        schemaId: schemaId,
+                      },
+                      {
+                        attributeName: Attributes.CURRENT_SEMESTER_PERFORMANCE_SGA,
+                        credDefId: credDefId,
+                        schemaId: schemaId,
+                      },
+                      {
+                        attributeName: Attributes.CUMULATIVE_SEMESTER_PERFORMANCE_SGA,
+                        credDefId: credDefId,
+                        schemaId: schemaId,
+                      },
+                    ],
                   },
-                  {
-                    attributeName: Attributes.STUDENT_NAME,
-                    credDefId: credDefId,
-                    schemaId: schemaId,
-                  },
-                  {
-                    attributeName: Attributes.UNIVERSITY_NAME,
-                    credDefId: credDefId,
-                    schemaId: schemaId,
-                  },
-                  {
-                    attributeName: Attributes.CURRENT_SEMESTER_PERFORMANCE_SGA,
-                    credDefId: credDefId,
-                    schemaId: schemaId,
-                  },
-                  {
-                    attributeName: Attributes.CUMULATIVE_SEMESTER_PERFORMANCE_SGA,
-                    credDefId: credDefId,
-                    schemaId: schemaId,
-                  },
-                ],
+            },
                 comment: "Degree Certificate",
               };
               await createProofRequest(payload);
