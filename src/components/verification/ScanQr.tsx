@@ -28,18 +28,6 @@ const QrCode = () => {
     setShowWebCam(false);
   };
 
-//   useEffect(()=> {
-//     const inter = setInterval(() => {
-//       setStep(step + 1)
-//     }, 2000)
-// console.log(step)
-//     if(step === 5){
-//       setVerifiedData("true")
-//     }
-
-//     return () => clearInterval(inter)
-//   }, [step])
-
   const showComponent = () => {
     switch (true) {
       case showWebCam:

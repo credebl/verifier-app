@@ -26,6 +26,22 @@ interface IOpenWebCamProps {
   showVerifiedDetails: (result: any) => void;
 }
 
+interface IAttributes {
+  attributeName: string;
+  credDefId: string;
+  schemaId: string;
+}
+
+interface IProofRequestPayload {
+  connectionId: string;
+  proofFormats: {
+    indy: {
+  attributes: IAttributes[];
+}
+}
+  comment: string;
+}
+
 const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   onCloseWebCam,
   onScan,
@@ -40,12 +56,15 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   const [connectionStatus, setConnectionStatus] = useState("");
 
   const fetchShorteningUrlData = async (payload: string) => {
+    console.log('payload5666::::', payload);
     try {
       handleStepChange(1);
       setStep(1);
-      const invitationData = payload && payload?.split("/")[5];
-      if (invitationData) {
-        const response: any = await getShorteningUrl(invitationData);
+      const referenceId = payload && payload?.split("/")[5];
+      console.log('invitationData::::', referenceId);
+      if (referenceId) {
+        const response: any = await getShorteningUrl(referenceId);
+        console.log('response::::', response);
         const { data } = response;
         await acceptInvitation(data?.data?.invitationPayload);
       }
@@ -53,6 +72,7 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
   };
 
   const handleQrCodeScanned = async (result: any) => {
+    console.log('result::::', result);
     fetchShorteningUrlData(result);
     onScan(result);
   };
@@ -76,33 +96,37 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
               const schemaId = envConfig.PUBLIC_SCHEMA_ID;
               const payload = {
                 connectionId: connectionId,
-                attributes: [
-                  {
-                    attributeName: Attributes.SL_NO,
-                    credDefId: credDefId,
-                    schemaId: schemaId,
+                proofFormats: {
+                  indy: {
+                    attributes: [
+                      {
+                        attributeName: Attributes.SL_NO,
+                        credDefId: credDefId,
+                        schemaId: schemaId,
+                      },
+                      {
+                        attributeName: Attributes.STUDENT_NAME,
+                        credDefId: credDefId,
+                        schemaId: schemaId,
+                      },
+                      {
+                        attributeName: Attributes.UNIVERSITY_NAME,
+                        credDefId: credDefId,
+                        schemaId: schemaId,
+                      },
+                      {
+                        attributeName: Attributes.CURRENT_SEMESTER_PERFORMANCE_SGA,
+                        credDefId: credDefId,
+                        schemaId: schemaId,
+                      },
+                      {
+                        attributeName: Attributes.CUMULATIVE_SEMESTER_PERFORMANCE_SGA,
+                        credDefId: credDefId,
+                        schemaId: schemaId,
+                      },
+                    ],
                   },
-                  {
-                    attributeName: Attributes.STUDENT_NAME,
-                    credDefId: credDefId,
-                    schemaId: schemaId,
-                  },
-                  {
-                    attributeName: Attributes.UNIVERSITY_NAME,
-                    credDefId: credDefId,
-                    schemaId: schemaId,
-                  },
-                  {
-                    attributeName: Attributes.CURRENT_SEMESTER_PERFORMANCE_SGA,
-                    credDefId: credDefId,
-                    schemaId: schemaId,
-                  },
-                  {
-                    attributeName: Attributes.CUMULATIVE_SEMESTER_PERFORMANCE_SGA,
-                    credDefId: credDefId,
-                    schemaId: schemaId,
-                  },
-                ],
+            },
                 comment: "Degree Certificate",
               };
               await createProofRequest(payload);
@@ -161,11 +185,14 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
     }
   };
 
-  const createProofRequest = async (payload: any) => {
+  // const createProofRequest = async (payload: any) => {
+    const createProofRequest = async (payload: IProofRequestPayload) => {
     try {
+      console.log('payload45678::::', payload);
       const token = getFromLocal('session') || '';
-      if (payload?.attributes?.length > 0) {
+      if (payload?.proofFormats?.indy?.attributes?.length > 0) {
         const response = await sendProofRequest(token, payload);
+        console.log('response:::', response);
         const { data } = response as AxiosResponse;
 
         if (data?.statusCode === apiStatusCodes.API_STATUS_CREATED) {
