@@ -102,27 +102,22 @@ const OpenWebCam: React.FC<IOpenWebCamProps> = ({
                       {
                         attributeName: Attributes.SL_NO,
                         credDefId: credDefId,
-                        schemaId: schemaId,
                       },
                       {
                         attributeName: Attributes.STUDENT_NAME,
                         credDefId: credDefId,
-                        schemaId: schemaId,
                       },
                       {
                         attributeName: Attributes.UNIVERSITY_NAME,
                         credDefId: credDefId,
-                        schemaId: schemaId,
                       },
                       {
                         attributeName: Attributes.CURRENT_SEMESTER_PERFORMANCE_SGA,
                         credDefId: credDefId,
-                        schemaId: schemaId,
                       },
                       {
                         attributeName: Attributes.CUMULATIVE_SEMESTER_PERFORMANCE_SGA,
                         credDefId: credDefId,
-                        schemaId: schemaId,
                       },
                     ],
                   },
